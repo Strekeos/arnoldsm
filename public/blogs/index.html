@@ -164,73 +164,73 @@
         </div>
     </div>
 
-    
-    <div id="mobile-menu" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden transition-all duration-300">
-        <div class="flex flex-col h-full overflow-y-auto max-h-screen">
-            <div class="flex justify-between items-center p-6 border-b border-gray-800">
-                <span class="text-xl font-bold text-white">Menu</span>
-                <button id="mobile-menu-close" class="text-gray-300 hover:text-white focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-            <nav class="flex flex-col p-6 space-y-4 bg-[#121212] rounded-lg shadow-lg">
-                
-                <a href="http://localhost:1313/about/" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 ">About</a>
-                
-                <a href="http://localhost:1313/experience/" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 ">Experience</a>
-                
-                <a href="http://localhost:1313/projects/" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 ">Projects</a>
-                
-                <a href="http://localhost:1313/blogs/" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 text-white font-semibold">Blogs</a>
-                
-                <a href="http://localhost:1313/contact/" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 ">Contact Me</a>
-                
-            </nav>
-            <div class="mt-auto p-6 border-t border-gray-800">
-                <div class="flex items-center justify-center">
-                    <span class="text-lg text-gray-300 mr-2">Local Time:</span>
-                    <div id="mobile-local-time" class="text-lg text-gray-300"></div>
-                </div>
+
+<div id="mobile-menu" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden transition-all duration-300">
+    <div class="flex flex-col h-full">
+        <div class="flex justify-between items-center p-6 border-b border-gray-800">
+            <span class="text-xl font-bold text-white">Menu</span>
+            <button id="mobile-menu-close" class="text-gray-300 hover:text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <nav class="flex flex-col p-6 space-y-4">
+            
+            <a href="http://localhost:1313/about/" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 ">About</a>
+            
+            <a href="http://localhost:1313/experience/" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 ">Experience</a>
+            
+            <a href="http://localhost:1313/projects/" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 ">Projects</a>
+            
+            <a href="http://localhost:1313/blogs/" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 text-white font-semibold">Blogs</a>
+            
+            <a href="http://localhost:1313/contact/" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 ">Contact Me</a>
+            
+        </nav>
+        <div class="mt-auto p-6 border-t border-gray-800">
+            <div class="flex items-center justify-center">
+                <span class="text-lg text-gray-300 mr-2">Local Time:</span>
+                <div id="mobile-local-time" class="text-lg text-gray-300"></div>
             </div>
         </div>
     </div>
+</div>
 </header>
 
 <script>
-    
-    function updateLocalTime() {
-        const timeElements = document.querySelectorAll('#local-time, #mobile-local-time');
-        timeElements.forEach(element => {
-            if (element) {
-                const now = new Date();
-                const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                element.textContent = timeString;
-            }
-        });
-    }
-    updateLocalTime();
-    setInterval(updateLocalTime, 1000);
 
-    
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenuClose = document.getElementById('mobile-menu-close');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    function toggleMobileMenu() {
-        const isHidden = mobileMenu.classList.contains('hidden');
-        if (isHidden) {
-            mobileMenu.classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; 
-        } else {
-            mobileMenu.classList.add('hidden');
-            document.body.style.overflow = ''; 
+function updateLocalTime() {
+    const timeElements = document.querySelectorAll('#local-time, #mobile-local-time');
+    timeElements.forEach(element => {
+        if (element) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            element.textContent = timeString;
         }
-    }
+    });
+}
+updateLocalTime();
+setInterval(updateLocalTime, 1000);
 
-    mobileMenuButton.addEventListener('click', toggleMobileMenu);
-    mobileMenuClose.addEventListener('click', toggleMobileMenu);
+
+const mobileMenuButton = document.getElementById('mobile-menu-button');
+const mobileMenuClose = document.getElementById('mobile-menu-close');
+const mobileMenu = document.getElementById('mobile-menu');
+
+function toggleMobileMenu() {
+    const isHidden = mobileMenu.classList.contains('hidden');
+    if (isHidden) {
+        mobileMenu.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; 
+    } else {
+        mobileMenu.classList.add('hidden');
+        document.body.style.overflow = ''; 
+    }
+}
+
+mobileMenuButton.addEventListener('click', toggleMobileMenu);
+mobileMenuClose.addEventListener('click', toggleMobileMenu);
 
     
     const mobileMenuLinks = mobileMenu.querySelectorAll('a');
