@@ -15,7 +15,7 @@ canonifyURLs = true
 [params]
 name = "Arnold Smolinka"
 location = "Istanbul, Türkiye"
-description = "Engineer. I do whatever I set my mind to."
+description = "I do whatever I set my mind to."
 profile_image = "/images/profile.png"
 discord = "arnold0001"
 github = "https://github.com/Strekeos"
@@ -27,12 +27,6 @@ medium = "https://www.medium.com/@johndoe123"
 linkedin = "https://www.linkedin.com/in/arnold-sm"
 linkedin_username = "Arnold SMOLINKA"
 instagram = "https://instagram.com/arnoldsmolinka/"
-leetcode = "https://leetcode.com/johndoe123"
-leetcode_username = "johndoe123"
-monkeytype = "https://monkeytype.com/profile/johndoe123"
-monkeytype_username = "johndoe123"
-kaggle = "https://www.kaggle.com/johndoe123"
-kaggle_username = "johndoe123"
 
 [[params.honors]]
 institution = "Istanbul University"
