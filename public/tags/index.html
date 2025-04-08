@@ -165,9 +165,11 @@
     </div>
 
 
-<div id="mobile-menu" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden transition-all duration-300">
-    <div class="flex flex-col h-full backdrop-blur-sm">
-        <div class="flex justify-between items-center p-6 border-b border-gray-800 bg-black/80 backdrop-blur-sm">
+<div id="mobile-menu" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm transition-all duration-300">
+    
+    <div class="flex flex-col h-full bg-black/80">
+        
+        <div class="flex justify-between items-center p-6 border-b border-gray-800">
             <span class="text-xl font-bold text-white">Menu</span>
             <button id="mobile-menu-close" class="text-gray-300 hover:text-white focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -175,30 +177,39 @@
                 </svg>
             </button>
         </div>
-        <nav class="flex flex-col backdrop-blur-sm">
+        
+        
+        <nav class="flex flex-col">
             
-            <a href="http://localhost:1313/about/" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 px-6 py-4 border-b border-gray-800 bg-black/70 backdrop-blur-sm hover:bg-black/60 ">
+            <a href="http://localhost:1313/about/" 
+               class="text-xl text-gray-300 hover:text-white transition-colors duration-300 px-6 py-4 border-b border-gray-800 bg-black/70 hover:bg-black/60 ">
                 About
             </a>
             
-            <a href="http://localhost:1313/experience/" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 px-6 py-4 border-b border-gray-800 bg-black/70 backdrop-blur-sm hover:bg-black/60 ">
+            <a href="http://localhost:1313/experience/" 
+               class="text-xl text-gray-300 hover:text-white transition-colors duration-300 px-6 py-4 border-b border-gray-800 bg-black/70 hover:bg-black/60 ">
                 Experience
             </a>
             
-            <a href="http://localhost:1313/projects/" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 px-6 py-4 border-b border-gray-800 bg-black/70 backdrop-blur-sm hover:bg-black/60 ">
+            <a href="http://localhost:1313/projects/" 
+               class="text-xl text-gray-300 hover:text-white transition-colors duration-300 px-6 py-4 border-b border-gray-800 bg-black/70 hover:bg-black/60 ">
                 Projects
             </a>
             
-            <a href="http://localhost:1313/blogs/" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 px-6 py-4 border-b border-gray-800 bg-black/70 backdrop-blur-sm hover:bg-black/60 ">
+            <a href="http://localhost:1313/blogs/" 
+               class="text-xl text-gray-300 hover:text-white transition-colors duration-300 px-6 py-4 border-b border-gray-800 bg-black/70 hover:bg-black/60 ">
                 Blogs
             </a>
             
-            <a href="http://localhost:1313/contact/" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 px-6 py-4 border-b border-gray-800 bg-black/70 backdrop-blur-sm hover:bg-black/60 ">
+            <a href="http://localhost:1313/contact/" 
+               class="text-xl text-gray-300 hover:text-white transition-colors duration-300 px-6 py-4 border-b border-gray-800 bg-black/70 hover:bg-black/60 ">
                 Contact Me
             </a>
             
         </nav>
-        <div class="mt-auto p-6 border-t border-gray-800 bg-black/80 backdrop-blur-sm">
+        
+        
+        <div class="mt-auto p-6 border-t border-gray-800">
             <div class="flex items-center justify-center">
                 <span class="text-lg text-gray-300 mr-2">Local Time:</span>
                 <div id="mobile-local-time" class="text-lg text-gray-300"></div>

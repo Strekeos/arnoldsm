@@ -48,9 +48,9 @@
         </div>
     </div>
 
-<!-- Mobile Navigation Overlay - Proper Blur + Backgrounds -->
+<!-- Mobile Navigation Overlay - Final Version -->
 <div id="mobile-menu" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm transition-all duration-300">
-    <!-- Content Container with visible backgrounds -->
+    <!-- Content Container -->
     <div class="flex flex-col h-full bg-black/80">
         <!-- Menu Header -->
         <div class="flex justify-between items-center p-6 border-b border-gray-800 bg-black/80">
@@ -62,7 +62,7 @@
             </button>
         </div>
         
-        <!-- Menu Items with visible backgrounds -->
+        <!-- Menu Items -->
         <nav class="flex flex-col bg-black/80">
             {{ range .Site.Menus.main }}
             <a href="{{ .URL | absURL }}" 
@@ -72,11 +72,11 @@
             {{ end }}
         </nav>
         
-        <!-- Footer -->
-        <div class="mt-auto p-6 border-t border-gray-800 bg-black/80">
+        <!-- Time Footer - Now with distinct styling -->
+        <div class="mt-auto p-6 border-t border-gray-800 bg-black/90">  <!-- Darker background -->
             <div class="flex items-center justify-center">
                 <span class="text-lg text-gray-300 mr-2">Local Time:</span>
-                <div id="mobile-local-time" class="text-lg text-gray-300"></div>
+                <div id="mobile-local-time" class="text-lg font-medium text-white"></div>  <!-- White and bolder time -->
             </div>
         </div>
     </div>
