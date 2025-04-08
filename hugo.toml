@@ -136,7 +136,7 @@ link = "https://github.com/Strekeos/custom-qmk-firmware/tree/main/GMMK%20Numpad"
 title = "QMK Firmware for Monsgeek M1 V5"
 description = "Updated firmware for Monsgeek M1 V5"
 tech = "QMK, Java, C"
-image = "/images/projects/monsgeekm1v5"
+image = "/images/projects/monsgeekm1v5.png"
 link = "https://github.com/Strekeos/custom-qmk-firmware/tree/main/Compiled/Monsgeek%20M1%20V5"
 
 [[params.blogs]]
