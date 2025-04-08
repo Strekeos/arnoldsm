@@ -59,7 +59,7 @@
                     </svg>
                 </button>
             </div>
-            <nav class="flex flex-col p-6 space-y-4">
+            <nav class="flex flex-col p-6 space-y-4 bg-[#121212] rounded-lg shadow-lg">
                 {{ range .Site.Menus.main }}
                 <a href="{{ .URL | absURL }}" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 {{ if eq $currentPage.RelPermalink .URL }}text-white font-semibold{{ end }}">{{ .Name }}</a>
                 {{ end }}
