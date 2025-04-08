@@ -4,10 +4,8 @@ draft: false
 layout: "experience"
 ---
 
-My career path has been defined by a passion for pushing technological boundaries and delivering impactful solutions in Machine Learning, AI, and Software Development.
+With 22+ years of hands-on experience in tech, my journey started from sheer curiosity—tinkering with design tools, internet utilities, and whatever software I could get my hands on. That curiosity evolved into a practical mindset: learn fast, adapt quicker, and figure things out as I go. Technology isn’t just a skillset for me—it’s a second language.
 
-As you'll discover, each role in my journey has been more than just a position—it's been an opportunity to solve complex problems and create meaningful technological advancements. From developing sophisticated financial prediction models at Marva.ai to engineering efficient ML pipelines at Knowledge Solutions India, and pioneering digital marketing strategies at Laugh Out Loud Ventures, each experience has built upon the last.
+My professional path has been as versatile as my interests, spanning financial auditing, HR, data control, and live event production. Each role added new layers to how I approach systems, people, and problem-solving. I’ve worked on the ground and behind the scenes, always looking for smarter, more efficient ways to do things.
 
-And like my continued contributions to Open Source, I'm just getting started.
-
-The question isn't whether you need someone with my skills—it's whether you're ready for the results I deliver.
+Over the years, I’ve taught myself to code—Python, HTML, Java, and more—always with AI by my side as a tool, not a crutch. I experiment with LLMs, build automations, and dive into new tech the moment I need it. I don’t aim to be a master of everything—but if it matters, I’ll learn it and apply it.

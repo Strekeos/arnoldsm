@@ -3,8 +3,10 @@ title: "About Me"
 draft: false
 layout: "about"
 ---
-I have been working with ML models, data and AI  for the past 7 years of my life and I’ve got this drive to push boundaries and make things happen. I love the rush of cracking a tough problem, whether it’s coding something new or figuring out how far I can take a wild idea. Building stuff that’s smart and useful? That’s my jam.
+I’m Arnold—a hybrid of spreadsheets and code, auditing financial systems by day and engineering AI tools by night. My career is a Venn diagram: one circle in corporate rigor (BDDK/KGK compliance, HR analytics), the other in chaos (Cappadocia cave hotels, concert production). The overlap? Relentless problem-solving.
 
-This portfolio’s me in a nutshell—projects I’ve messed with, blogs where I ramble. I’m into creating, learning, and not settling for boring. If you’re curious, hit me up on any of my socials. Let’s see what’s next.
+Trained in environmental engineering, I dissect data with lab precision. Built software to automate bureaucracy, track employee milestones, and streamline audits—because even compliance can have a brain. Fluent in Turkish, English, and Python.
 
-I'm currently available for internships and full-time opportunities. If you're looking for someone passionate, skilled, and ready to contribute, I'm here to help bring your ideas to life!
+This space dissects the friction between legacy systems and modern tech. Think AI grafted onto HR workflows, financial data stripped into art, or why managing midnight hotel check-ins sharpens your code-debugging instincts.
+
+Not here for polish. Here for the raw edge of applied curiosity.
