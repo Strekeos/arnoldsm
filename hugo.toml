@@ -145,7 +145,7 @@ date = "2025-04-09"
 summary = "My first blog post on this website."
 tags = ["Blog", "First", "Website"]
 content = """
-Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit...
+This is my first blog post that I made for my website. AI is great and with help of some models this didn’t even took a day to develop.
 """
 link = "https://medium.com/@absmolinka/first-blog-post-720899b25e15"
 
