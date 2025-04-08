@@ -1,0 +1,254 @@
+baseURL = 'https://arnoldsm.github.io/'
+languageCode = 'en-us'
+title = 'ArnoldSM - Portfolio & Blog'
+theme = 'hugo-noir'
+
+# URL handling
+relativeURLs = true
+canonifyURLs = true
+
+# Taxonomy configuration
+[taxonomies]
+  category = "categories"
+  tag = "tags"
+
+[params]
+name = "Arnold Smolinka"
+location = "Istanbul, Türkiye"
+description = "Engineer. I do whatever I put my mind in to."
+profile_image = "/images/profile.png"
+discord = "arnold0001"
+github = "https://github.com/Strekeos"
+github_username = "Strekeos"
+email = "absmolinka@gmail.com"
+twitter = "https://www.twitter.com/Strekeos"
+twitter_username = "Strekeos"
+medium = "https://www.medium.com/@johndoe123"
+linkedin = "https://www.linkedin.com/in/arnold-sm"
+linkedin_username = "Arnold SMOLINKA"
+instagram = "https://instagram.com/arnoldsmolinka/"
+leetcode = "https://leetcode.com/johndoe123"
+leetcode_username = "johndoe123"
+monkeytype = "https://monkeytype.com/profile/johndoe123"
+monkeytype_username = "johndoe123"
+kaggle = "https://www.kaggle.com/johndoe123"
+kaggle_username = "johndoe123"
+
+[[params.honors]]
+institution = "Istanbul University"
+title = "Environmental Engineering"
+date = "June 2020"
+
+[[params.honors]]
+institution = "Istanbul Atatürk Anadolu Lisesi"
+title = "Math & Science"
+date = "June 2015"
+
+[[params.certifications]]
+title = "A&CD Assesment Center"
+date = "Nov 2022"
+url = "https://www.assessment.com.tr/"
+
+[[params.certifications]]
+title = "İTÜSEM Finance and Economics Training for Managers"
+date = "March 2025" 
+url = "https://itusem.itu.edu.tr/"
+
+[[params.certifications]]
+title = "Financial Accounting"
+date = "March 2025" 
+url = "https://www.vizyongrubu.com/akademi/"
+
+[[params.experience]]
+company = "VIZYON DENETIM VE SERBEST MUHASEBECI MALI MÜŞAVIRLIK LTD. ŞTI."
+role = "JUNIOR FINANCIAL AUDITOR"
+period = "Nov 2024 - Present"
+logo = "/images/company/vizyon.png"
+description = "Junior Financial Auditor focused on audits, reports, and fieldwork."
+responsibilities = [
+    "Collection, examination, and comparison of financial documents.",
+    "Control of Independent Audit Reports and pre-report work.",
+    "Preparation of BDDK (Banking Regulation and Supervision Agency) Foreign Currency Reports.",
+    "KGK (Public Oversight, Accounting and Auditing Standards Authority) table works.",
+    "Fieldwork for stock and cash counting."
+]
+
+[[params.experience]]
+company = "BİLKENT HOLDİNG TEPE İSG HİZMETLERİ A.Ş. "
+role = "Human Resources Specialist"
+period = "Sept 2021 - Dec 2023"
+logo = "/images/company/tepe.jpg"
+description = "Responsible for recruitment processes, onboarding, personnel tracking, and HR process optimization."
+responsibilities = [
+    "Identifying personnel shortages and preparing personnel shortage reports.",
+    "Creating and finding candidate pools.",
+    "Conducting recruitment and post-employment interviews.",
+    "Managing the entry and exit processes of employment.",
+    "Monitoring trial and evaluation processes.",
+    "Optimizing human resources processes.",
+    "Turkish to English translations."
+]
+
+[[params.experience]]
+company = "BİLKENT HOLDİNG TEPE İSG HİZMETLERİ A.Ş. "
+role = "Data Control Specialist, Human Resources and Admisintrative Affairs Officer"
+period = "Sept 2020 - Sept 2021"
+logo = "/images/company/tepe.jpg"
+description = "Handles HR tasks, expense payments, document control, and Turkish-English translations."
+responsibilities = [
+    "Data control, Document archiving, Archive reporting.",
+    "Recruitment-removal procedures.",
+    "Human resources document control and follow-up.",
+    "Payment of business expenses.",
+    "Supply of tools and materials needed for work.",
+    "Turkish to English translations."
+]
+
+[[params.experience]]
+company = "ZOOM MUSIC"
+role = "Production Assistant"
+period = "Nov 2018 - Sept 2020"
+logo = "/images/company/zoom.jpg"
+description = "Manages tour planning, logistics, and technical support, ensuring smooth concert setup, operation, and teardown."
+responsibilities = [
+    "Pre-concert setup, continuity during the concerts, post-concert equipment gathering.",
+    "Planning tours.",
+    "Technical support.",
+    "Backstage support.",
+    "Planning logistics."
+]
+
+[[params.experience]]
+company = "BEDROCK CAVE HOTEL"
+role = "Night Manager"
+period = "July 2018 - Sept 2018 and July 2019 - Sept 2019"
+logo = "/images/company/bedrock.jpg"
+description = "Oversees staff discipline, daily preparations, guest check-ins/check-outs, and tour and balloon ride sales."
+responsibilities = [
+    "Ensuring staff work discipline.",
+    "Making daytime preparations.",
+    "Supervising night check-ins and check-outs.",
+    "Supervising tour and ballon ride sales."
+]
+
+[[params.projects]]
+title = "QMK Software for GMMK Numpad"
+description = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam."
+tech = "QMK, Java, C"
+image = "/images/projects/image_enhance.png"
+link = "https://github.com/loremipsum/consectetur"
+
+[[params.projects]]
+title = "QMK Software for Monsgeek M1 V5"
+description = "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur."
+tech = "QMK, Java, C"
+image = "/images/projects/automail_ai.png"
+link = "https://github.com/loremipsum/adipiscing"
+
+[[params.blogs]]
+title = "Konsül Nedir ?"
+date = "2025-04-08"
+summary = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem."
+tags = ["Lorem", "Ipsum", "Dolor"]
+content = """
+Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit...
+"""
+link = "https://medium.com/@loremipsum/lorem-systems"
+
+[[params.blogs]]
+title = "The Future of Dolor"
+date = "2025-02-28"
+summary = "At vero eos et accusamus et iusto odio dignissimos ducimus."
+tags = ["Sit", "Amet", "Consectetur"]
+content = """
+Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis...
+"""
+link = "https://medium.com/@loremipsum/future-dolor"
+
+[[params.blogs]]
+title = "Adipiscing: A Practical Guide"
+date = "2025-02-10"
+summary = "Nam libero tempore, cum soluta nobis est eligendi optio."
+tags = ["Elit", "Tempor", "Guide"]
+content = """
+Et harum quidem rerum facilis est et expedita distinctio...
+"""
+link = "https://medium.com/@loremipsum/adipiscing-guide"
+
+[[params.blogs]]
+title = "Optimizing Incididunt"
+date = "2025-01-20"
+summary = "Temporibus autem quibusdam et aut officiis debitis."
+tags = ["Labore", "Dolore", "Magna"]
+content = """
+Itaque earum rerum hic tenetur a sapiente delectus...
+"""
+link = "https://medium.com/@loremipsum/optimizing-incididunt"
+
+[[params.blogs]]
+title = "Aliqua: A Comprehensive Guide"
+date = "2024-12-15"
+summary = "Quis autem vel eum iure reprehenderit qui in ea voluptate."
+tags = ["Ut", "Enim", "Minim"]
+content = """
+Nisi ut aliquid ex ea commodi consequatur quis autem...
+"""
+link = "https://medium.com/@loremipsum/aliqua-guide"
+
+[[params.blogs]]
+title = "Veniam in Practice"
+date = "2024-11-20"
+summary = "Duis aute irure dolor in reprehenderit in voluptate velit."
+tags = ["Esse", "Cillum", "Dolore"]
+content = """
+Excepteur sint occaecat cupidatat non proident...
+"""
+link = "https://medium.com/@loremipsum/veniam-practice"
+
+[[params.blogs]]
+title = "Fugiat for Systems"
+date = "2024-10-25"
+summary = "Sunt in culpa qui officia deserunt mollit anim id est laborum."
+tags = ["Nulla", "Pariatur", "Systems"]
+content = """
+Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+"""
+link = "https://medium.com/@loremipsum/fugiat-systems"
+
+[[params.blogs]]
+title = "Best Practices in Consectetur"
+date = "2024-09-30"
+summary = "Sed do eiusmod tempor incididunt ut labore et dolore magna."
+tags = ["Best", "Practices", "Guide"]
+content = """
+Ut enim ad minim veniam, quis nostrud exercitation...
+"""
+link = "https://medium.com/@loremipsum/consectetur-practices"
+
+[[params.voluntary]]
+role = "Community Lead"
+organization = "Lorem Foundation"
+period = "2020 - Present"
+description = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis."
+
+[menu]
+  [[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 1
+  [[menu.main]]
+    name = "Experience"
+    url = "/experience/"
+    weight = 2
+  [[menu.main]]
+    name = "Projects"
+    url = "/projects/"
+    weight = 3
+  [[menu.main]]
+    name = "Blogs"
+    url = "/blogs/"
+    weight = 4
+  [[menu.main]]
+    name = "Contact Me"
+    url = "/contact/"
+    weight = 5
