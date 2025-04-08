@@ -1,4 +1,4 @@
-baseURL = 'baseURL = "https://arnoldsm.pages.dev/"
+baseURL = "https://arnoldsm.pages.dev/"
 languageCode = 'en-us'
 title = 'ArnoldSM - Portfolio & Blog'
 theme = 'hugo-noir'
