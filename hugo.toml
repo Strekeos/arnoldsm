@@ -15,7 +15,7 @@ canonifyURLs = true
 [params]
 name = "Arnold Smolinka"
 location = "Istanbul, Türkiye"
-description = "Engineer. I do whatever I put my mind in to."
+description = "Engineer. I do whatever I set my mind to."
 profile_image = "/images/profile.png"
 discord = "arnold0001"
 github = "https://github.com/Strekeos"
