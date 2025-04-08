@@ -126,18 +126,18 @@ responsibilities = [
 ]
 
 [[params.projects]]
-title = "QMK Software for GMMK Numpad"
-description = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam."
+title = "QMK Firmware for GMMK Numpad"
+description = "Updated firmware for GMMK Numpad"
 tech = "QMK, Java, C"
-image = "/images/projects/image_enhance.png"
-link = "https://github.com/loremipsum/consectetur"
+image = "/images/projects/gmmknumpad.png"
+link = "https://github.com/Strekeos/custom-qmk-firmware/tree/main/GMMK%20Numpad"
 
 [[params.projects]]
-title = "QMK Software for Monsgeek M1 V5"
-description = "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur."
+title = "QMK Firmware for Monsgeek M1 V5"
+description = "Updated firmware for Monsgeek M1 V5"
 tech = "QMK, Java, C"
-image = "/images/projects/automail_ai.png"
-link = "https://github.com/loremipsum/adipiscing"
+image = "/images/projects/monsgeekm1v5"
+link = "https://github.com/Strekeos/custom-qmk-firmware/tree/main/Compiled/Monsgeek%20M1%20V5"
 
 [[params.blogs]]
 title = "Konsül Nedir ?"
