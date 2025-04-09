@@ -1,5 +1,6 @@
 ---
 title: "My Second Post"
+layout: "single"
 date: 2025-04-09
 draft: false
 tags: ["hugo", "web development"]
