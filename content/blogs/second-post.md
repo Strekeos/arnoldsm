@@ -11,3 +11,5 @@ featured: false  # Set to true to feature this post on the homepage
 ---
 
 This is the second post of the website and the first post that is hosted on the website.
+
+Good luck to whoever reads this.
