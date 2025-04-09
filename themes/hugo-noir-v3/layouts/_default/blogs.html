@@ -1,38 +1,34 @@
 {{ define "main" }}
-<div class="w-full md:w-3/4 lg:w-1/2 mx-auto px-4 py-12"> <!-- Reverted width/padding classes -->
-    <h1 class="text-5xl font-bold mb-12">{{ .Title }}</h1> <!-- Reverted h1 classes -->
+<div class="w-full px-4 py-12 sm:w-5/6 md:w-3/4 lg:w-2/3 xl:w-1/2 mx-auto">
+    <h1 class="text-5xl font-bold mb-12">{{ .Title }}</h1>
 
-    <div class="space-y-12 max-w-3xl mx-auto">
-        <!-- Prepare lists for both internal and external posts -->
+    <div class="space-y-12 max-w-4xl mx-auto">
+
         {{ $regularPosts := slice }}
         {{ range where .Site.RegularPages "Section" "blogs" }}
             {{ $img := "" }}
             {{ with .Params.featured_image }}{{ $img = . }}{{ end }}
-            <!-- Determine summary beforehand -->
-            {{ $summary := .Summary }}
-            {{ if isset .Params "summary" }}{{ $summary = .Params.summary }}{{ end }}
+             {{ $summary := .Summary }}
+             {{ if isset .Params "summary" }}{{ $summary = .Params.summary }}{{ end }}
             {{ $post := dict
                 "title" .Title
                 "date" .Date
                 "dateStr" (.Date.Format "January 2, 2006")
                 "link" .RelPermalink
                 "summary" $summary
+                "tags" .Params.tags
                 "isExternal" false
                 "image" $img
-                "tags" .Params.tags
-             }}
+            }}
             {{ $regularPosts = $regularPosts | append $post }}
         {{ end }}
 
         {{ $externalPosts := slice }}
         {{ range .Site.Params.blogs }}
-            <!-- Determine external summary -->
-            {{ $summaryExt := .summary | default "" }}
-             <!-- Determine external tags -->
-             {{ $tagsExt := slice }}
-             {{ if isset . "tags" }}{{ $tagsExt = .tags }}{{ end }}
             {{ $img := "" }}
             {{ with .image }}{{ $img = . }}{{ end }}
+             {{ $tagsExt := slice }}
+             {{ if isset . "tags" }}{{ $tagsExt = .tags }}{{ end }}
             {{ $date := time .date }}
             {{ $dateStr := $date.Format "January 2, 2006" }}
             {{ $post := dict
@@ -40,47 +36,61 @@
                 "date" $date
                 "dateStr" $dateStr
                 "link" .link
-                "summary" $summaryExt
+                "summary" .summary
+                "tags" $tagsExt
                 "isExternal" true
                 "image" $img
-                "tags" $tagsExt
             }}
             {{ $externalPosts = $externalPosts | append $post }}
         {{ end }}
 
-        <!-- Combine and sort all posts -->
         {{ $allPosts := $regularPosts | append $externalPosts }}
         {{ $sortedPosts := sort $allPosts "date" "desc" }}
 
-        <!-- Loop through the combined and sorted list -->
         {{ range $sortedPosts }}
             {{ $currentPost := . }}
-            <!-- Use div structure similar to original, adding external badge logic -->
-            <div class="group">
-                <!-- Container for date/badge -->
-                <div class="flex items-center gap-2 mb-2">
-                    <p class="text-gray-400 text-sm">{{ $currentPost.dateStr }}</p> <!-- Use formatted dateStr -->
-                     {{ if $currentPost.isExternal }}
-                        <span class="px-1.5 py-0.5 text-xs bg-gray-800 text-gray-300 rounded-md">External</span>
-                     {{ end }}
-                </div>
-                <a href="{{ $currentPost.link }}" class="block" {{ if $currentPost.isExternal }}target="_blank" rel="noopener noreferrer"{{ end }}>
-                    <!-- Kept post title style -->
-                    <h3 class="text-xl font-medium text-blue-400 hover:text-blue-300 transition-colors duration-200 mb-3">{{ $currentPost.title }}</h3>
-                </a>
-                <!-- Removed line-clamp to match original -->
-                <p class="text-gray-400 mb-4">{{ $currentPost.summary }}</p>
-                 {{ with $currentPost.tags }}
-                 <div class="flex flex-wrap gap-2">
-                     {{ range . }}
-                         {{ if ne . "" }}
-                          <!-- Reverted tag span classes -->
-                         <span class="px-2 py-1 text-xs bg-[#121212] text-gray-100 border border-gray-800 rounded-md transition-all duration-300">{{ . }}</span>
-                         {{ end }}
-                     {{ end }}
+            {{ $imagePath := $currentPost.image }}
+            {{ $imageExists := false }}
+            {{ $checkPath := "" }}
+
+            {{ if and $imagePath (ne $imagePath "") }}
+                {{ $checkPath = printf "static%s" $imagePath }}
+                {{ if fileExists $checkPath }}
+                    {{ $imageExists = true }}
+                {{ end }}
+            {{ end }}
+
+             <div class="group flex flex-col sm:flex-row items-start gap-4 sm:gap-6 border-b border-gray-800 pb-8 last:border-b-0 last:pb-0">
+                 {{ if $imageExists }}
+                 <div class="w-full sm:w-1/4 lg:w-1/5 flex-shrink-0">
+                     <a href="{{ $currentPost.link }}" class="block" {{ if $currentPost.isExternal }}target="_blank" rel="noopener noreferrer"{{ end }}>
+                         <img src="{{ $imagePath }}" alt="{{ $currentPost.title }} featured image" class="aspect-video w-full rounded-md object-cover shadow group-hover:shadow-md transition-shadow duration-200">
+                     </a>
                  </div>
                  {{ end }}
-            </div>
+
+                 <div class="{{ if $imageExists }}w-full sm:w-3/4 lg:w-4/5{{ else }}w-full{{ end }}">
+                    <div class="flex items-center gap-2 mb-2">
+                        <p class="text-gray-400 text-sm">{{ $currentPost.dateStr }}</p>
+                        {{ if $currentPost.isExternal }}
+                        <span class="px-1.5 py-0.5 text-xs bg-gray-800 text-gray-300 rounded-md">External</span>
+                        {{ end }}
+                    </div>
+                    <a href="{{ $currentPost.link }}" class="block" {{ if $currentPost.isExternal }}target="_blank" rel="noopener noreferrer"{{ end }}>
+                        <h3 class="text-xl font-medium text-blue-400 hover:text-blue-300 transition-colors duration-200 mb-3">{{ $currentPost.title }}</h3>
+                    </a>
+                    <p class="text-gray-400 mb-4 line-clamp-3">{{ $currentPost.summary }}</p>
+                     {{ with $currentPost.tags }}
+                     <div class="flex flex-wrap gap-2">
+                         {{ range . }}
+                         {{ if ne . "" }}
+                         <span class="px-2 py-1 text-xs bg-[#121212] text-gray-100 border border-gray-800 rounded-md transition-all duration-300">{{ . }}</span>
+                         {{ end }}
+                         {{ end }}
+                     </div>
+                     {{ end }}
+                 </div>
+             </div>
         {{ end }}
 
         {{ if eq (len $sortedPosts) 0 }}
