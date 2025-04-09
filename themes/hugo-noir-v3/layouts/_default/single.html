@@ -1,21 +1,20 @@
 {{ define "main" }}
-<div class="w-1/2 mx-auto py-12">
-    <div class="max-w-3xl mx-auto p-8 border border-gray-800 rounded-2xl bg-[#121212]">
-        <h1 class="text-4xl font-bold mb-4">{{ .Title }}</h1>
+<div class="w-full px-4 sm:px-6 py-8 sm:py-12">
+    <div class="mx-auto p-6 sm:p-8 border border-gray-800 rounded-2xl bg-[#121212] max-w-3xl">
+        <h1 class="text-3xl sm:text-4xl font-bold mb-4">{{ .Title }}</h1>
         {{ if eq .Section "blogs" }}
-            <div class="flex items-center gap-4 mb-8 text-gray-400">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mb-6 sm:mb-8 text-gray-400">
                 <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
-                <div class="flex gap-2">
+                <div class="flex flex-wrap gap-2">
                     {{ range .Params.tags }}
                     <span class="px-2 py-1 bg-gray-800 rounded-md text-xs font-medium text-gray-300">{{ . }}</span>
                     {{ end }}
                 </div>
             </div>
         {{ end }}
-        
-        <div class="prose prose-invert max-w-none">
-            {{ .Content }}
-        </div>
+            <div class="text-gray-300 text-xl leading-loose max-w-none [&>p]:mb-5 [&>h2]:text-2xl [&>h3]:text-xl [&>ul]:list-disc [&>ul]:ml-6 [&>ul>li]:mb-2">
+                {{ .Content }}
+            </div>                   
     </div>
 </div>
-{{ end }} 
+{{ end }}

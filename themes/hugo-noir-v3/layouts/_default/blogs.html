@@ -3,34 +3,10 @@
     <h1 class="text-5xl font-bold mb-12">{{ .Title }}</h1>
     
     <div class="space-y-12 max-w-3xl mx-auto">
-        <h2 class="text-3xl font-bold mb-6">All Articles</h2>
-        
-        {{ $regularPosts := slice }}
-        {{ range where .Site.RegularPages "Section" "blogs" }}
-            {{ $post := dict "title" .Title "date" .Date "dateStr" (.Date.Format "January 2, 2006") "link" .RelPermalink "summary" (cond (isset .Params "summary") .Params.summary .Summary) "tags" .Params.tags "isExternal" false }}
-            {{ $regularPosts = $regularPosts | append $post }}
-        {{ end }}
-
-        {{ $externalPosts := slice }}
         {{ range .Site.Params.blogs }}
-            {{ $date := time .date }}
-            {{ $dateStr := $date.Format "January 2, 2006" }}
-            {{ $post := dict "title" .title "date" $date "dateStr" $dateStr "link" .link "summary" .summary "tags" .tags "isExternal" true }}
-            {{ $externalPosts = $externalPosts | append $post }}
-        {{ end }}
-
-        {{ $allPosts := $regularPosts | append $externalPosts }}
-        {{ $sortedPosts := sort $allPosts "date" "desc" }}
-
-        {{ range $sortedPosts }}
-        <div class="group mb-8">
-            <div class="flex items-center gap-2 mb-2">
-                <p class="text-gray-400 text-sm">{{ .dateStr }}</p>
-                {{ if .isExternal }}
-                <span class="px-1.5 py-0.5 text-xs bg-gray-800 text-gray-300 rounded-md">External</span>
-                {{ end }}
-            </div>
-            <a href="{{ .link }}" class="block" {{ if .isExternal }}target="_blank"{{ end }}>
+        <div class="group">
+            <p class="text-gray-400 text-sm mb-2">{{ .date }}</p>
+            <a href="{{ .link }}" class="block" target="_blank">
                 <h3 class="text-xl font-medium text-blue-400 hover:text-blue-300 transition-colors duration-200 mb-3">{{ .title }}</h3>
             </a>
             <p class="text-gray-400 mb-4">{{ .summary }}</p>

@@ -18,7 +18,7 @@
         }
     </style>
 </head>
-<header class="py-6 relative">
+<header class="sticky top-0 z-50 py-6 bg-black/80 backdrop-blur-sm">
     <div class="max-w-6xl mx-auto px-4">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div class="flex justify-between items-center">
@@ -39,62 +39,83 @@
                 <a href="{{ .URL | absURL }}" class="inline-block text-lg text-gray-300 hover:text-white transition-colors duration-300 {{ if eq $currentPage.RelPermalink .URL }}text-white font-semibold{{ end }}">{{ .Name }}</a>
                 {{ end }}
             </nav>
+            <div class="hidden md:flex justify-end">
+                <div class="flex items-center">
+                    <span class="text-lg text-gray-300 mr-2">Local Time:</span>
+                    <div id="local-time" class="text-lg text-gray-300"></div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Mobile Navigation Overlay -->
-    <div id="mobile-menu" class="fixed inset-0 bg-black bg-opacity-90 z-50 hidden transition-all duration-300">
-        <div class="flex flex-col h-full">
-            <div class="flex justify-between items-center p-6 border-b border-gray-800">
-                <span class="text-xl font-bold text-white">Menu</span>
-                <button id="mobile-menu-close" class="text-gray-300 hover:text-white focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
+<!-- Mobile Navigation Overlay - Final Version -->
+<div id="mobile-menu" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm transition-all duration-300">
+    <!-- Content Container -->
+    <div class="flex flex-col h-full bg-black/80">
+        <!-- Menu Header -->
+        <div class="flex justify-between items-center p-6 border-b border-gray-800 bg-black/80">
+            <span class="text-xl font-bold text-white">Menu</span>
+            <button id="mobile-menu-close" class="text-gray-300 hover:text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Menu Items -->
+        <nav class="flex flex-col bg-black/80">
+            {{ range .Site.Menus.main }}
+            <a href="{{ .URL | absURL }}" 
+               class="text-xl text-gray-300 hover:text-white transition-colors duration-300 px-6 py-4 border-b border-gray-800 bg-black/70 hover:bg-black/60 {{ if eq $currentPage.RelPermalink .URL }}text-white font-semibold bg-black/60{{ end }}">
+                {{ .Name }}
+            </a>
+            {{ end }}
+        </nav>
+        
+        <!-- Time Footer - Now with distinct styling -->
+        <div class="mt-auto p-6 border-t border-gray-800 bg-black/90">  <!-- Darker background -->
+            <div class="flex items-center justify-center">
+                <span class="text-lg text-gray-300 mr-2">Local Time:</span>
+                <div id="mobile-local-time" class="text-lg font-medium text-white"></div>  <!-- White and bolder time -->
             </div>
-            <nav class="flex flex-col p-6 space-y-4">
-                {{ range .Site.Menus.main }}
-                <a href="{{ .URL | absURL }}" class="text-xl text-gray-300 hover:text-white transition-colors duration-300 {{ if eq $currentPage.RelPermalink .URL }}text-white font-semibold{{ end }}">{{ .Name }}</a>
-                {{ end }}
-            </nav>
         </div>
     </div>
+</div>
 </header>
 
 <script>
-    // Time display function
-    function updateLocalTime() {
-        const timeElements = document.querySelectorAll('#local-time, #mobile-local-time');
-        timeElements.forEach(element => {
-            if (element) {
-                const now = new Date();
-                const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                element.textContent = timeString;
-            }
-        });
-    }
-    updateLocalTime();
-    setInterval(updateLocalTime, 1000);
-
-    // Mobile menu functionality
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenuClose = document.getElementById('mobile-menu-close');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    function toggleMobileMenu() {
-        const isHidden = mobileMenu.classList.contains('hidden');
-        if (isHidden) {
-            mobileMenu.classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
-        } else {
-            mobileMenu.classList.add('hidden');
-            document.body.style.overflow = ''; // Restore scrolling
+// Time display function
+function updateLocalTime() {
+    const timeElements = document.querySelectorAll('#local-time, #mobile-local-time');
+    timeElements.forEach(element => {
+        if (element) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            element.textContent = timeString;
         }
-    }
+    });
+}
+updateLocalTime();
+setInterval(updateLocalTime, 1000);
 
-    mobileMenuButton.addEventListener('click', toggleMobileMenu);
-    mobileMenuClose.addEventListener('click', toggleMobileMenu);
+// Mobile menu functionality
+const mobileMenuButton = document.getElementById('mobile-menu-button');
+const mobileMenuClose = document.getElementById('mobile-menu-close');
+const mobileMenu = document.getElementById('mobile-menu');
+
+function toggleMobileMenu() {
+    const isHidden = mobileMenu.classList.contains('hidden');
+    if (isHidden) {
+        mobileMenu.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+    } else {
+        mobileMenu.classList.add('hidden');
+        document.body.style.overflow = ''; // Restore scrolling
+    }
+}
+
+mobileMenuButton.addEventListener('click', toggleMobileMenu);
+mobileMenuClose.addEventListener('click', toggleMobileMenu);
 
     // Close menu when clicking on a link
     const mobileMenuLinks = mobileMenu.querySelectorAll('a');
@@ -141,4 +162,4 @@
             }
         });
     }
-</script> 
+</script>
