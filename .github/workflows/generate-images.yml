@@ -28,7 +28,7 @@ jobs:
       - name: Generate images
         env:
           TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
-        run: python generate_images.py
+        run: python scripts/generate_images.py
 
       - name: Commit changes
         run: |
