@@ -1,34 +1,50 @@
+# .github/workflows/generate_blog_images.yml
 name: Generate Blog Images
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    branches: [ main ] # Runs when changes are pushed to the main branch
+  workflow_dispatch:   # Allows manual triggering from the Actions tab
 
 jobs:
   generate:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to push changes back to the repo
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.10
+          python-version: '3.10'
+          cache: 'pip' # Cache pip dependencies
 
       - name: Install dependencies
         run: pip install pyyaml requests
 
       - name: Generate images
         env:
+          # IMPORTANT: Make sure TOGETHER_API_KEY is set in your repo's Secrets
+          # Settings > Secrets and variables > Actions > New repository secret
           TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
         run: python generate_images.py
 
       - name: Commit changes
         run: |
-          git config user.name "GitHub Actions"
+          git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
+          # Stage only the target directory
           git add static/images/blog/
-          git commit -m "Add AI-generated blog images" || echo "No changes to commit"
-          git push
+
+          # Check if there are any staged changes
+          if ! git diff --staged --quiet; then
+            echo "Changes detected. Committing and pushing..."
+            # Commit the changes with [skip ci] to prevent workflow loops
+            git commit -m "Add AI-generated blog images [skip ci]"
+            git push
+          else
+            echo "No changes to commit."
+          fi
