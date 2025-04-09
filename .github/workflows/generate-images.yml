@@ -10,7 +10,7 @@ jobs:
   generate:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write # Required to push changes back to the repo
 
     steps:
       - name: Checkout repo
@@ -20,22 +20,29 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          cache: 'pip' # Keep caching enabled
+          cache: 'pip' # Assumes requirements.txt exists
 
       - name: Install dependencies
-        run: pip install -r requirements.txt # Install from the file
+        # Assumes requirements.txt, otherwise use: pip install pyyaml requests
+        run: pip install -r requirements.txt
 
       - name: Generate images
         env:
           TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
-        run: python .github/scripts/generate_images.py # <-- Correct path
+        # Path to script inside .github/scripts/
+        run: python .github/scripts/generate_images.py
+
       - name: Commit changes
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
-          git add static/images/blog/
+          # *** UPDATED: Stage changes from the correct image directory ***
+          git add static/images/blogs/
+
+          # Check if there are any staged changes
           if ! git diff --staged --quiet; then
             echo "Changes detected. Committing and pushing..."
+            # Commit the changes with [skip ci] to prevent workflow loops
             git commit -m "Add AI-generated blog images [skip ci]"
             git push
           else
