@@ -102,7 +102,7 @@ responsibilities = [
 company = "ZOOM MUSIC"
 role = "Production Assistant"
 period = "Nov 2018 - Sept 2020"
-logo = "/images/company/zoom.jpg"
+logo = "/images/company/zoom.png"
 description = "Manages tour planning, logistics, and technical support, ensuring smooth concert setup, operation, and teardown."
 responsibilities = [
     "Pre-concert setup, continuity during the concerts, post-concert equipment gathering.",
@@ -116,7 +116,7 @@ responsibilities = [
 company = "BEDROCK CAVE HOTEL"
 role = "Night Manager"
 period = "July 2018 - Sept 2018 and July 2019 - Sept 2019"
-logo = "/images/company/bedrock.jpg"
+logo = "/images/company/bedrock.png"
 description = "Oversees staff discipline, daily preparations, guest check-ins/check-outs, and tour and balloon ride sales."
 responsibilities = [
     "Ensuring staff work discipline.",
