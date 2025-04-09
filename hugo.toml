@@ -149,6 +149,16 @@ This is my first blog post that I made for my website. AI is great and with help
 """
 link = "https://medium.com/@absmolinka/first-blog-post-720899b25e15"
 
+[[params.blogs]]
+title = "My Second Blog Post"
+date = "2025-04-09"
+summary = "First self hosted blog post."
+tags = ["hosting", "blog", "post"]
+content = """
+This is the second post of the website and the first post that is hosted on the website.
+"""
+link = "https://arnoldsm.pages.dev/blogs/second-post/"
+
 [menu]
   [[menu.main]]
     name = "About"
