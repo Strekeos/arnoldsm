@@ -161,7 +161,7 @@ link = "https://arnoldsm.pages.dev/blogs/second-post/"
 
 [[params.blogs]]
 title = "Crafting Content with AI: A Guide to AI-Assisted Blog Post Creation"
-date = "2024-08-01" # Replace with the actual current date
+date = "2025-04-09"
 summary = "Explore the strategic integration of Artificial Intelligence in blog writing, maximizing efficiency while maintaining authenticity and quality."
 tags = ["AI", "Content Creation", "Blogging", "Artificial Intelligence", "Writing Tools", "Productivity"]
 content = """
@@ -200,7 +200,7 @@ Using AI in content creation necessitates transparency and ethical awareness:
 
 Artificial Intelligence offers powerful tools to augment the blog creation process, enhancing efficiency and overcoming common hurdles. By adopting a strategic approach—focusing on precise prompting, iterative refinement, rigorous verification, and infusing human creativity—bloggers can leverage AI as a valuable collaborator. The future of content creation lies not in full automation, but in the synergistic partnership between human ingenuity and artificial intelligence, resulting in higher quality content produced more effectively.
 """
-link = "https://arnoldsm.pages.dev/blogs/crafting-content-with-ai-a-guide-to-ai-assisted-blog-post-creation.md"
+link = "https://arnoldsm.pages.dev/blogs/crafting-content-with-ai-a-guide-to-ai-assisted-blog-post-creation/"
 
 [menu]
   [[menu.main]]

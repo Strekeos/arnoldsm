@@ -2,10 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/tags/ai/</loc>
+    <lastmod>2025-04-09T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/</loc>
-    <lastmod>2025-09-04T00:00:00+00:00</lastmod>
+    <lastmod>2025-04-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/artificial-intelligence/</loc>
+    <lastmod>2025-04-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/blogging/</loc>
+    <lastmod>2025-04-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/categories/</loc>
+    <lastmod>2025-04-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/content-creation/</loc>
+    <lastmod>2025-04-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/blogs/crafting-content-with-ai-a-guide-to-ai-assisted-blog-post-creation/</loc>
     <lastmod>2025-04-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/hugo/</loc>
@@ -14,13 +29,25 @@
     <loc>http://localhost:1313/blogs/second-post/</loc>
     <lastmod>2025-04-09T00:00:00+00:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/tags/productivity/</loc>
+    <lastmod>2025-04-09T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2025-04-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/technology/</loc>
     <lastmod>2025-04-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/categories/testing/</loc>
     <lastmod>2025-04-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/tags/web-dev/</loc>
+    <lastmod>2025-04-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/categories/writing/</loc>
+    <lastmod>2025-04-09T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/writing-tools/</loc>
     <lastmod>2025-04-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/about/</loc>
