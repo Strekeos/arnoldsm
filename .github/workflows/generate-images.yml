@@ -1,0 +1,61 @@
+name: Generate Missing Blog Images
+
+on:
+  push:
+    branches:
+      - main # Or your default branch
+    paths:
+      # Trigger only if markdown files in the target directory change
+      - 'content/blogs/**.md'
+      # Also trigger if the script itself changes
+      - '.github/scripts/generate_images.py'
+      - '.github/workflows/generate-images.yml'
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      # Required to checkout the code
+      contents: write # Change to write to allow pushing commits
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # Use latest version
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' # Or your preferred version
+          cache: 'pip' # Cache dependencies
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install Pillow python-frontmatter
+          # Optional: Install system library needed by Pillow for font rendering if needed
+          # sudo apt-get update && sudo apt-get install -y fonts-dejavu-core
+
+      - name: Run Image Generation Script
+        id: generate_script # Give the step an ID to reference its output
+        run: python .github/scripts/generate_images.py
+
+      - name: Commit and Push Changes
+        # Only run this step if the script output 'images_generated' was 'true'
+        if: steps.generate_script.outputs.images_generated == 'true'
+        run: |
+          echo "Changes detected, committing generated images..."
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          # Add only files within the specific static image directory
+          git add static/images/blogs/*
+          # Check if there are staged changes before attempting to commit
+          if ! git diff --staged --quiet; then
+            git commit -m "chore: Generate missing blog placeholder images [skip ci]"
+            echo "Pushing changes..."
+            git push origin ${{ github.ref_name }}
+          else
+            echo "No staged changes detected after running 'git add'. This might indicate an issue."
+          fi
+        env:
+          # The GITHUB_TOKEN is automatically provided by Actions
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
