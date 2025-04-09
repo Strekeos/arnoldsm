@@ -3,7 +3,7 @@ title: "My Second Post"
 layout: "single"
 date: 2025-04-09
 draft: false
-tags: ["hugo", "web development"]
+tags: ["hugo", "web dev"]
 categories: ["testing"]
 description: "A detailed description of the post for SEO and previews"
 featured_image: "/images/post-cover.jpg"
