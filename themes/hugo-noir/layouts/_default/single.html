@@ -12,10 +12,9 @@
                 </div>
             </div>
         {{ end }}
-        
-        <div class="text-gray-300 prose prose-invert max-w-none prose-p:my-6 first:prose-p:mt-0">
-            {{ .Content }}
-        </div>
+            <div class="text-gray-300 text-xl leading-loose max-w-none [&>p]:mb-5 [&>h2]:text-2xl [&>h3]:text-xl [&>ul]:list-disc [&>ul]:ml-6 [&>ul>li]:mb-2">
+                {{ .Content }}
+            </div>                   
     </div>
 </div>
 {{ end }}
