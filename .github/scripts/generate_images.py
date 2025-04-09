@@ -4,17 +4,20 @@ import re
 import requests
 import base64
 import yaml
+import time  # <-- Import the time module
 from pathlib import Path
 
 # --- Configuration ---
 TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
 API_URL = "https://api.together.xyz/inference"
-MODEL = "black-forest-labs/FLUX.1-schnell-Free" # Verify model
+MODEL = "black-forest-labs/FLUX.1-schnell-Free"
 
-# Ensure these paths match your repository structure exactly
 POSTS_DIR = Path("content/blogs")
-# *** THIS MUST BE PLURAL 'blogs' ***
-IMAGES_DIR = Path("static/images/blogs")
+IMAGES_DIR = Path("static/images/blogs") # Plural 'blogs'
+
+# Delay between API calls in seconds (to respect rate limits)
+# 6 queries/min = 10 seconds/query. Add buffer -> 12 seconds.
+API_DELAY = 12
 
 HEADERS = {
     "Authorization": f"Bearer {TOGETHER_API_KEY}",
@@ -33,8 +36,9 @@ def generate_image(prompt: str) -> bytes:
         "model": MODEL,
         "prompt": prompt,
         "n": 1,
-        "steps": 30,
-        "width": 512, # Ensure these dimensions are appropriate
+        # *** FIX: Changed steps from 30 to 4 ***
+        "steps": 4,
+        "width": 512,
         "height": 512,
     }
     print(f"Sending request to Together API for prompt: '{prompt}'")
@@ -43,10 +47,15 @@ def generate_image(prompt: str) -> bytes:
     try:
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
+        # Log details before raising the exception again
         print(f"API Request failed: {e}")
-        print(f"Response Status Code: {response.status_code}")
-        print(f"Response Body: {response.text}")
-        raise
+        try:
+            # Try to get status code and body even on error
+            print(f"Response Status Code: {response.status_code}")
+            print(f"Response Body: {response.text}")
+        except Exception:
+             print("Could not retrieve response details after initial error.")
+        raise # Re-raise the original exception to be caught in main()
 
     result = response.json()
 
@@ -73,13 +82,7 @@ def parse_frontmatter(filepath: Path) -> dict:
             front = yaml.safe_load(frontmatter_str)
             return front if isinstance(front, dict) else {}
         return {}
-    except FileNotFoundError:
-        print(f"Warning: File not found {filepath}")
-        return {}
-    except yaml.YAMLError as e:
-        print(f"Warning: Could not parse YAML frontmatter in {filepath}: {e}")
-        return {}
-    except Exception as e:
+    except Exception as e: # Catch broader exceptions during file/parse
         print(f"Warning: Error reading or parsing {filepath}: {e}")
         return {}
 
@@ -87,21 +90,36 @@ def main():
     """Main function to find posts, generate missing images, and save them."""
     print(f"Starting image generation process.")
     print(f"Scanning posts in: {POSTS_DIR.resolve()}")
-    # *** Ensure this logs the PLURAL 'blogs' path ***
     print(f"Saving images to: {IMAGES_DIR.resolve()}")
+    print(f"API call delay set to: {API_DELAY} seconds")
 
     IMAGES_DIR.mkdir(parents=True, exist_ok=True)
 
     generated_count = 0
     skipped_count = 0
     failed_count = 0
+    processed_count = 0 # Keep track for delaying
 
     if not POSTS_DIR.is_dir():
         print(f"Error: Posts directory not found: {POSTS_DIR.resolve()}")
         return
 
-    for md_file in POSTS_DIR.glob("*.md"):
-        print(f"\nProcessing file: {md_file.name}")
+    # Get list of files first to know the total count if needed
+    md_files = list(POSTS_DIR.glob("*.md"))
+    total_files = len(md_files)
+    print(f"Found {total_files} markdown files to process.")
+
+    for md_file in md_files:
+        processed_count += 1
+        print(f"\nProcessing file {processed_count}/{total_files}: {md_file.name}")
+
+        # --- Add delay *before* processing the next file (if not the first) ---
+        # Ensures delay even if parsing/checks cause a skip before API call
+        if processed_count > 1:
+             print(f"  - Waiting {API_DELAY} seconds before next API interaction...")
+             time.sleep(API_DELAY)
+        # ---
+
         front = parse_frontmatter(md_file)
         if not front:
             print("  - No valid frontmatter found. Skipping.")
@@ -110,7 +128,6 @@ def main():
 
         image_path_str = front.get("featured_image", "")
 
-        # *** THIS IS THE FLEXIBLE CHECK - No more startswith('/images/blog/') ***
         if not image_path_str or image_path_str.startswith(('http://', 'https://')):
             if not image_path_str:
                 print(f"  - No 'featured_image' key in frontmatter. Skipping generation.")
@@ -118,10 +135,8 @@ def main():
                 print(f"  - 'featured_image' path ('{image_path_str}') is a URL. Skipping generation.")
             skipped_count += 1
             continue
-        # --- End of updated check ---
 
         image_filename = Path(image_path_str).name
-        # *** Ensure this uses the PLURAL 'blogs' IMAGES_DIR ***
         image_out_path = IMAGES_DIR / image_filename
 
         if image_out_path.exists():
@@ -145,8 +160,12 @@ def main():
             print(f"  - Successfully generated and saved image: {image_out_path}")
             generated_count += 1
         except Exception as e:
-            print(f"  - FAILED to generate image for {md_file.name}: {e}")
+            # Catch errors during generation or saving
+            # Error details should have been printed within generate_image()
+            print(f"  - FAILED to generate image for {md_file.name}. Error: {e}")
             failed_count += 1
+            # Optional: Decide if you want to stop on failure
+            # raise
 
     print("\n--- Image Generation Summary ---")
     print(f"Generated: {generated_count}")
