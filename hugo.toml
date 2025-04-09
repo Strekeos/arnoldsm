@@ -1,7 +1,7 @@
 baseURL = "https://arnoldsm.pages.dev/"
 languageCode = 'en-us'
 title = 'ArnoldSM - Portfolio & Blog'
-theme = 'hugo-noir'
+theme = 'hugo-noir-v4'
 
 # URL handling
 relativeURLs = true
