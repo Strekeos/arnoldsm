@@ -28,8 +28,7 @@ jobs:
       - name: Generate images
         env:
           TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
-        run: python scripts/generate_images.py
-
+        run: python .github/scripts/generate_images.py # <-- Correct path
       - name: Commit changes
         run: |
           git config user.name "GitHub Actions Bot"
