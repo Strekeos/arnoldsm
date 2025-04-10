@@ -10,10 +10,6 @@ featured_image: "/images/blogs/flying-whales-abc123.png"
 featured: false
 ---
 
-![Flying whale soaring above the clouds](/images/blogs/flying-whales-abc123.png)
-*AI-generated image of a majestic flying whale blending fantasy and nature*
-
-
 # Introduction
 
 Throughout history, the idea of creatures soaring through the skies has fascinated humanity. Among these fantastical beings, flying whales stand out as a particularly majestic and awe-inspiring concept. Combining the immense size and grace of whales with the freedom of flight, they evoke a sense of wonder that transcends the boundaries of reality.
