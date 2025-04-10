@@ -6,7 +6,7 @@ draft: false
 tags: ["AI", "Content Creation", "Blogging", "Artificial Intelligence", "Writing Tools", "Productivity"]
 categories: ["Technology", "Writing"]
 description: "Learn how to effectively utilize AI tools for blog post creation, enhancing productivity and overcoming writer's block while maintaining quality and authenticity."
-featured_image: "/images/blogs/ai-blogging-collaboration.jpg"
+featured_image: "/images/blogs/crafting-content-with-ai-a-guide-to-ai-assisted-blog-post-creation.jpg"
 suggested_prompt: "An artistic illustration of AI collaborating with a human writer, futuristic digital workspace, vibrant colors"
 featured: false
 ---
