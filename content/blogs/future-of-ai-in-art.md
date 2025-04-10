@@ -16,9 +16,6 @@ featured: false
 
 Artificial Intelligence is revolutionizing the world of art, enabling artists to explore new creative frontiers. From generating stunning visuals to composing music, AI tools are expanding the boundaries of artistic expression and collaboration.
 
-![Futuristic AI-generated artwork blending technology and creativity](/images/blogs/future-of-ai-in-art-generated.png)
-*An AI-generated visualization of the future of art and technology.*
-
 ## Advantages
 
 - **Enhanced Creativity:** AI can suggest novel ideas, styles, and compositions, inspiring artists to push their limits.
