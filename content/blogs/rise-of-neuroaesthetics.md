@@ -2,7 +2,7 @@
 title: "🧠 The Rise of Neuroaesthetics: How Art and Beauty Are Being Measured by Science"
 layout: "single"
 date: 2025-04-09
-draft: true
+draft: false
 tags: ["neuroscience", "neuroaesthetics", "art", "design", "brain imaging", "AI", "UX", "marketing"]
 categories: ["Neuroscience", "Art", "Technology"]
 description: "Exploring how neuroscience is decoding our perception of beauty and art, and how this knowledge is transforming design, marketing, and AI creativity."
