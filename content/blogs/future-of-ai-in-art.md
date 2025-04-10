@@ -6,8 +6,9 @@ draft: false
 tags: ["AI", "Art", "Technology"]
 categories: ["Artificial Intelligence", "Creativity"]
 description: "Exploring how AI is transforming artistic creation and the future of creative expression."
-featured_image: "/images/blogs/future-of-ai-in-art-generated.png"
+featured_image: "/images/blogs/future-of-ai-in-art.jpg"
 featured: false
+suggested_prompt: "A futuristic digital artwork blending human creativity and artificial intelligence, vibrant colors, abstract shapes, symbolizing collaboration between artists and AI."
 ---
 
 # The Future of AI in Art

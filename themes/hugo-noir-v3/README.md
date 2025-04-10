@@ -289,7 +289,7 @@ draft: false
 tags: ["hugo", "web development"]
 categories: ["tutorials"]
 description: "A detailed description of the post for SEO and previews"
-featured_image: "/images/post-cover.jpg"
+featured_image: "/images/blogs/your-post-slug.jpg"
 featured: false  # Set to true to feature this post on the homepage
 ---
 ```

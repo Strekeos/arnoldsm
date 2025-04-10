@@ -6,8 +6,9 @@ draft: false
 tags: ["neuroscience", "neuroaesthetics", "art", "design", "brain imaging", "AI", "UX", "marketing"]
 categories: ["Neuroscience", "Art", "Technology"]
 description: "Exploring how neuroscience is decoding our perception of beauty and art, and how this knowledge is transforming design, marketing, and AI creativity."
-featured_image: "/images/neuroaesthetics-brain-art.jpg"
+featured_image: "/images/blogs/rise-of-neuroaesthetics.jpg"
 featured: false  # Set to true to feature this post on the homepage
+suggested_prompt: "A vibrant fusion of neuroscience and art, a human brain with colorful artistic patterns, neural circuits glowing, symbolizing the science of beauty and creativity."
 ---
 
 # 🧠 The Rise of Neuroaesthetics: How Art and Beauty Are Being Measured by Science

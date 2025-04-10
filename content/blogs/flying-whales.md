@@ -6,8 +6,9 @@ draft: false
 tags: ["nature", "fantasy"]
 categories: ["wildlife", "imagination"]
 description: "Exploring the fascinating concept of flying whales and their place in fantasy and nature."
-featured_image: "/images/blogs/flying-whales-abc123.png"
+featured_image: "/images/blogs/flying-whales.jpg"
 featured: false
+suggested_prompt: "A majestic whale flying gracefully through a bright sky with clouds, blending fantasy and nature, awe-inspiring and surreal."
 ---
 
 # Introduction
