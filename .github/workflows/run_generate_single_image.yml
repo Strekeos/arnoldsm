@@ -27,7 +27,7 @@ jobs:
       - name: Run generate_single_image.py script
         env:
           TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}  # Make sure this secret is added in your GitHub repo settings
-        run: python arnoldsm/.github/scripts/generate_single_image.py  # Path relative to repo root
+        run: python .github/scripts/generate_single_image.py  # Path relative to repo root
 
 # Notes:
 # - Ensure you have added the secret 'TOGETHER_API_KEY' in your GitHub repository settings.
