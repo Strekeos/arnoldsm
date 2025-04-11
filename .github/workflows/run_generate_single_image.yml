@@ -1,0 +1,35 @@
+name: Run generate_single_image.py on push
+
+on:
+  push:
+    branches:
+      - '**'  # Trigger on push to any branch
+
+jobs:
+  generate-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'  # Use Python 3.8 or higher
+
+      - name: Install dependencies if requirements.txt exists
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt || true  # Ignore errors if file is missing or empty
+          fi
+
+      - name: Run generate_single_image.py script
+        env:
+          TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}  # Make sure this secret is added in your GitHub repo settings
+        run: python Website/arnoldsm/.github/scripts/generate_single_image.py  # Path relative to repo root
+
+# Notes:
+# - Ensure you have added the secret 'TOGETHER_API_KEY' in your GitHub repository settings.
+# - Add a requirements.txt file in the repo root if your script has dependencies.
+# - The script will run on every push to any branch.
