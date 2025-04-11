@@ -92,6 +92,9 @@ def main():
     - Non-interactive, suitable for automation.
     """
 
+    FORCE_REGENERATE = os.getenv("FORCE_REGENERATE", "0") == "1"
+    logging.info(f"FORCE_REGENERATE is {'enabled' if FORCE_REGENERATE else 'disabled'}.")
+
     if not TOGETHER_API_KEY:
         logging.warning("TOGETHER_API_KEY not found in environment variables.")
         return
@@ -104,6 +107,7 @@ def main():
     logging.info(f"Found {len(md_files)} markdown files to process.")
 
     for md_path in md_files:
+        logging.info(f"Processing markdown file: {md_path}")
         try:
             with open(md_path, "r", encoding="utf-8") as f:
                 content = f.read()
@@ -129,8 +133,11 @@ def main():
 
         # Check if image already exists
         if os.path.isfile(image_path):
-            logging.info(f"Image already exists for {md_filename}, skipping generation.")
-            continue
+            if not FORCE_REGENERATE:
+                logging.info(f"Image already exists for {md_filename}, skipping generation.")
+                continue
+            else:
+                logging.info(f"Image already exists for {md_filename}, but FORCE_REGENERATE is enabled. Regenerating image.")
 
         # Generate image
         logging.info(f"Generating image for {md_filename} with prompt: {prompt}")
