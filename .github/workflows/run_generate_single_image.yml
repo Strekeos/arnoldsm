@@ -1,35 +1,63 @@
-name: Run generate_single_image.py on push
+name: Generate and Commit Image
 
 on:
   push:
     branches:
-      - '**'  # Trigger on push to any branch
+      - main # Or your primary branch, maybe avoid '**' during testing
+      # Only run if markdown files change or script changes? (Optional)
+     paths:
+       - 'arnoldsm/content/blogs/**.md'
+       - '.github/scripts/generate_single_image.py'
+       - '.github/workflows/your_workflow.yml'
+  workflow_dispatch: # Allows manual triggering for testing
 
 jobs:
-  generate-image:
+  generate-and-commit-image: # Renamed job for clarity
     runs-on: ubuntu-latest
+
+    # Grant permissions for the GITHUB_TOKEN to push changes
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        # Fetch full history if needed for git operations, usually not needed here
+        # with:
+        #   fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.8'  # Use Python 3.8 or higher
+          python-version: '3.8' # Or your preferred version
 
-      - name: Install dependencies if requirements.txt exists
+      - name: Install dependencies from requirements.txt
         run: |
+          python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then
-            pip install -r requirements.txt || true  # Ignore errors if file is missing or empty
+            pip install -r requirements.txt # Removed '|| true'
+          else
+            echo "requirements.txt not found!"
+            exit 1 # Fail if requirements are expected but not found
           fi
 
-      - name: Run generate_single_image.py script
+      - name: Run image generation script
         env:
-          TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}  # Make sure this secret is added in your GitHub repo settings
-        run: python .github/scripts/generate_single_image.py  # Path relative to repo root
+          TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
+        run: python .github/scripts/generate_single_image.py
 
-# Notes:
-# - Ensure you have added the secret 'TOGETHER_API_KEY' in your GitHub repository settings.
-# - Add a requirements.txt file in the repo root if your script has dependencies.
-# - The script will run on every push to any branch.
+      - name: Commit and push generated images
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          # Add all generated images in the target directory
+          git add arnoldsm/static/images/blogs/*.jpg
+          # Check if there are changes to commit
+          # Use 'git diff --staged --quiet ||' to only proceed if there are staged changes
+          if ! git diff --staged --quiet; then
+            git commit -m "Automated: Generate blog images"
+            # Add retry logic for push in case of temporary network issues or branch protection conflicts
+            for i in 1 2 3; do git push && break || sleep 5; done
+          else
+            echo "No new images generated or changes detected."
+          fi
