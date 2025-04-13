@@ -5,12 +5,16 @@ on:
   push:
     branches:
       - main
-    # Optional: Only run if relevant files change
-    # paths:
-    #   - 'content/blogs/**.md'
-    #   - '.github/scripts/generate_single_image.py'
-    #   - '.github/workflows/generate_image.yml' # This workflow file
-    #   - 'requirements.txt'
+    # --- IMPORTANT: PATHS FILTER ---
+    # Only run this workflow if relevant source files are pushed.
+    # Do NOT run if only files in static/images/blogs/ are pushed (prevents loop).
+    paths:
+      - 'content/blogs/**.md'             # Markdown content changes
+      - '.github/scripts/generate_single_image.py' # Script changes
+      - '.github/workflows/generate_image.yml'     # Workflow changes
+      - 'requirements.txt'                # Dependency changes
+    # Note: 'static/images/blogs/**' is intentionally excluded here!
+    # --- /IMPORTANT: PATHS FILTER ---
 
   # Allow manual triggering from the Actions tab
   workflow_dispatch:
@@ -18,80 +22,45 @@ on:
 jobs:
   generate-and-commit-image:
     runs-on: ubuntu-latest
-
-    # Grant permissions for the GITHUB_TOKEN to push changes
     permissions:
       contents: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        # fetch-depth: 0 # Uncomment if your script needs full git history
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.8' # Or your preferred Python version
+          python-version: '3.8'
 
       - name: Install dependencies from requirements.txt
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then
-            echo "Installing dependencies from requirements.txt"
             pip install -r requirements.txt
           else
             echo "ERROR: requirements.txt not found!"
-            exit 1 # Fail the workflow if dependencies are missing
+            exit 1
           fi
 
       - name: Run image generation script
         env:
-          # Pass the API key from GitHub Secrets to the script
           TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
-          # Optional: Uncomment to force regeneration even if images exist
-          # FORCE_REGENERATE: "1"
         run: |
-          echo "Running Python script to generate images..."
           python .github/scripts/generate_single_image.py
-          echo "Python script finished."
 
-
-      # --- Option 1: Commit using standard git commands (More explicit) ---
-      - name: Commit and push generated images (git commands)
+      - name: Commit and push generated images
         run: |
-          echo "Configuring git user..."
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
-          echo "Staging generated images..."
-          # Use the correct path relative to the repository root
-          # Use '|| true' to prevent error if no new *.jpg files were created
           git add static/images/blogs/*.jpg || true
-
-          echo "Checking for staged changes..."
-          # Check if there are any actual changes staged
           if ! git diff --staged --quiet; then
             echo "Changes detected. Committing and pushing..."
-            git commit -m "Automated: Generate blog images [skip ci]" # Add [skip ci] to prevent re-triggering if needed
-            # Add retry logic for push in case of temporary issues
-            for i in 1 2 3; do git push && break || sleep 5; done
-            echo "Push successful."
+            # --- REMOVED [skip ci] ---
+            git commit -m "Automated: Generate blog images"
+            # --- /REMOVED [skip ci] ---
+            git push
           else
             echo "No new images generated or changes detected to commit."
           fi
-
-      # --- Option 2: Commit using a dedicated action (Simpler) ---
-      # Comment out the step above ("Commit and push generated images (git commands)") if you use this one.
-      # - name: Commit and push generated images (action)
-      #   uses: stefanzweifel/git-auto-commit-action@v5
-      #   with:
-      #     commit_message: "Automated: Generate blog images [skip ci]" # Add [skip ci] if needed
-      #     # Specify the directory or file pattern for generated images
-      #     file_pattern: "static/images/blogs/*.jpg"
-      #     # Optional: Specify committer details if needed (defaults are usually fine)
-      #     commit_user_name: github-actions[bot]
-      #     commit_user_email: github-actions[bot]@users.noreply.github.com
-      #     # Optional: Only commit to the branch the workflow ran on
-      #     push_options: '--force-with-lease' # Be careful with force push options
-      #     skip_dirty_check: false # Ensure only specified patterns are committed
-      #     skip_fetch: true # Already checked out
