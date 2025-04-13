@@ -34,7 +34,7 @@ title = "Environmental Engineering"
 date = "June 2020"
 
 [[params.honors]]
-institution = "Istanbul Atatürk Anadolu Lisesi"
+institution = "İstanbul Atatürk Anadolu Lisesi"
 title = "Math & Science"
 date = "June 2015"
 
@@ -54,7 +54,7 @@ date = "March 2025"
 url = "https://www.vizyongrubu.com/akademi/"
 
 [[params.experience]]
-company = "VİZYON DENETİM VE SERBEST MUHASEBECİ MALİ MÜŞAVIRLİK LTD. ŞTİ."
+company = "VİZYON DENETİM VE SERBEST MUHASEBECİ MALİ MÜŞAVİRLİK LTD. ŞTİ."
 role = "Junior Financial Auditor"
 period = "Nov 2024 - Present"
 logo = "/images/company/vizyon.png"
