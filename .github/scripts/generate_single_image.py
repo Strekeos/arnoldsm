@@ -16,8 +16,9 @@ TOGETHER_API_KEY = os.environ.get("TOGETHER_API_KEY")
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 # Relative paths rooted at arnoldsm project folder (updated requirement)
-CONTENT_DIR = os.path.join("..", "arnoldsm", "content", "blogs")
-IMAGES_DIR = os.path.join("..", "arnoldsm", "static", "images", "blogs")
+REPO_ROOT = os.getcwd()
+CONTENT_DIR = os.path.join(REPO_ROOT, "arnoldsm", "content", "blogs")
+IMAGES_DIR = os.path.join(REPO_ROOT, "arnoldsm", "static", "images", "blogs")
 
 def parse_frontmatter(md_content):
     """
