@@ -1,12 +1,13 @@
 ---
 title: "Attack on Fenerbahçe's Bus: A Dark Day for Turkish Football"
 date: "2025-04-13T21:55:54+03:00"
+draft: false
 layout: "single"
 tags: ["Fenerbahçe", "Football Violence", "Turkish Football", "Sports Safety", "Trabzon"]
 categories: ["Sports", "Current Events", "Turkey"]
 description: "Recounting the shocking 2015 armed attack on the Fenerbahçe football team's bus near Trabzon, a stark reminder of the dangers of fan violence."
 featured_image: "/images/blogs/attack-on-fenerbahces-bus-a-dark-day-for-turkish-football.jpg"
-featured: true
+featured: false
 suggested_prompt: "Night scene, a large yellow and navy blue team bus driving on a highway viaduct near Trabzon, Turkey. Suddenly the front windshield shatters violently from a shotgun blast, glass fragments flying inwards. Headlights cut through the darkness, illuminating the rain-slicked road. Inside, panic and shock. Outside, the silhouette of the Pontic Alps looms. Dramatic, tense atmosphere, photorealistic."
 ---
 
