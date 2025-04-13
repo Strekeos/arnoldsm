@@ -122,9 +122,9 @@ def main():
             continue
 
         # Extract prompt from frontmatter
-        prompt = frontmatter.get("prompt")
+        prompt = frontmatter.get("suggested_prompt")
         if not prompt:
-            logging.info(f"No prompt found in {md_path}, skipping.")
+            logging.info(f"Key 'suggested_prompt' not found or is empty in frontmatter for {md_path}. Available keys: {list(frontmatter.keys())}")
             continue
 
         # Determine output image filename (same as markdown filename but .jpg)
