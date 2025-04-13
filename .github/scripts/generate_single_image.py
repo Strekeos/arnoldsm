@@ -17,8 +17,8 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
 # Relative paths rooted at arnoldsm project folder (updated requirement)
 REPO_ROOT = os.getcwd()
-CONTENT_DIR = os.path.join(REPO_ROOT, "arnoldsm", "content", "blogs")
-IMAGES_DIR = os.path.join(REPO_ROOT, "arnoldsm", "static", "images", "blogs")
+CONTENT_DIR = os.path.join(REPO_ROOT, "content", "blogs") 
+IMAGES_DIR = os.path.join(REPO_ROOT, "static", "images", "blogs") 
 
 def parse_frontmatter(md_content):
     """
