@@ -49,18 +49,17 @@ jobs:
           TOGETHER_API_KEY: ${{ secrets.TOGETHER_API_KEY }}
         run: python .github/scripts/generate_single_image.py
 
-      - name: Commit and push generated images
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          # Add all generated images in the target directory
-          git add arnoldsm/static/images/blogs/*.jpg
-          # Check if there are changes to commit
-          # Use 'git diff --staged --quiet ||' to only proceed if there are staged changes
-          if ! git diff --staged --quiet; then
-            git commit -m "Automated: Generate blog images"
-            # Add retry logic for push in case of temporary network issues or branch protection conflicts
-            for i in 1 2 3; do git push && break || sleep 5; done
-          else
-            echo "No new images generated or changes detected."
-          fi
+  - name: Commit and push generated images
+    run: |
+      git config --global user.name 'github-actions[bot]'
+      git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+      # CORRECTED PATH for git add (relative to repo root)
+      git add static/images/blogs/*.jpg || true
+      # Check if there are staged changes before committing
+      if ! git diff --staged --quiet; then
+        echo "Changes detected, committing..."
+        git commit -m "Automated: Generate blog images"
+        git push
+      else
+        echo "No new images generated or changes detected to commit."
+      fi
