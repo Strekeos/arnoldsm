@@ -1,7 +1,3 @@
-Okay, here is the complete Python script (.github/scripts/generate_text_content.py) including the modification to use google/gemini-flash-1.5 specifically for the main content generation step (call_ai_for_content), while still using the simplified topic prompt in generate_topic_only for this testing phase.
-
-# .github/scripts/generate_text_content.py
-
 import os
 from openai import OpenAI, APIError, AuthenticationError, RateLimitError
 import yaml
