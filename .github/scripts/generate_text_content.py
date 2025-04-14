@@ -136,13 +136,14 @@ def generate_title_only(client, topic):
         logging.error(f"Error during title generation: {e}")
         return None
 
-# --- AI Call Function for Content (Unchanged from previous version) ---
+# --- Modified AI Call Function for Content (Improved Error Logging) ---
 def call_ai_for_content(client, title, topic, user_requested_ai_topic):
     """Calls the AI API using the OpenAI library structure, requesting SEO optimization."""
     if not client: return None, None
 
     ai_mention_instruction = "Do NOT mention AI, artificial intelligence, or machine learning unless the user's original topic explicitly required it." if not user_requested_ai_topic else "You can mention AI/ML concepts as relevant to the user-provided AI topic."
 
+    # --- System and User prompts remain the same as the SEO-focused version ---
     system_prompt = f"""
     You are an AI assistant specialized in creating high-quality, SEO-optimized blog posts formatted in Markdown.
     Your goal is to generate informative, engaging content that ranks well in search engines.
@@ -153,7 +154,6 @@ def call_ai_for_content(client, title, topic, user_requested_ai_topic):
     Do NOT include the --- separators or the fixed frontmatter fields (title, date, layout, draft, featured, featured_image) in your response.
     Your entire response should start directly with the 'tags:' line and continue with the rest of the requested frontmatter and then the markdown body (starting with '## Introduction').
     """
-
     user_prompt = f"""
     Generate an SEO-optimized markdown blog post draft.
 
@@ -184,6 +184,7 @@ def call_ai_for_content(client, title, topic, user_requested_ai_topic):
     """
 
     logging.info(f"Sending SEO-focused request via OpenAI library to OpenRouter (Model: {OPENROUTER_MODEL}) for title: {title}")
+    response_text = None # Variable to store raw response text on error
 
     try:
         response = client.chat.completions.create(
@@ -192,20 +193,21 @@ def call_ai_for_content(client, title, topic, user_requested_ai_topic):
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
             ],
+             # Optional: Increase timeout if suspecting partial server timeouts
+            timeout=240.0 # Increased timeout to 4 minutes
         )
         logging.debug(f"Raw response object from content generation: {response}")
 
         if response.choices:
             ai_response_text = response.choices[0].message.content.strip()
-            logging.debug(f"Extracted AI Response Text:\n{ai_response_text}")
-
+            # --- Parsing logic remains the same ---
             if "## Introduction" not in ai_response_text:
                  logging.error("AI response structure error: '## Introduction' marker missing.")
                  body_start_index = ai_response_text.find('##')
                  if body_start_index != -1:
                       generated_frontmatter_str = ai_response_text[:body_start_index].strip()
                       generated_body = ai_response_text[body_start_index:].strip()
-                 else: return None, None
+                 else: return None, None # Cannot parse
             else:
                  parts = ai_response_text.split('## Introduction', 1)
                  generated_frontmatter_str = parts[0].strip()
@@ -228,27 +230,48 @@ def call_ai_for_content(client, title, topic, user_requested_ai_topic):
                  logging.error(f"Could not parse AI-generated frontmatter: {e}")
                  logging.debug(f"Problematic Frontmatter String:\n{generated_frontmatter_str}")
                  return None, None
+            # --- /Parsing logic ---
         else:
+            # --- Log specific error if choices are missing ---
             logging.error("Invalid response structure from AI: 'choices' missing or empty.")
+            # Try to log the raw text if possible (might be available even if structure is bad)
+            if hasattr(response, 'text'):
+                 response_text = response.text
+                 logging.error(f"Raw response text when choices were missing: {response_text}")
+            elif hasattr(response, 'content'): # Might be bytes
+                 try:
+                     response_text = response.content.decode('utf-8')
+                     logging.error(f"Raw response content (decoded) when choices were missing: {response_text}")
+                 except:
+                      logging.error("Raw response content was not valid UTF-8.")
+            # --- / Log specific error ---
             return None, None
 
+    # --- Enhanced Error Catching ---
+    except APIError as e:
+        # Try to get raw response body from the error object
+        response_body = e.response.text if hasattr(e, 'response') and hasattr(e.response, 'text') else "N/A"
+        logging.error(f"OpenRouter API Error (Status: {e.status_code}): {e}. Raw Response: {response_body}")
+        return None, None
     except AuthenticationError as e:
         logging.error(f"OpenRouter Authentication Error: {e}. Check your API Key.")
         return None, None
     except RateLimitError as e:
         logging.error(f"OpenRouter Rate Limit Error: {e}. You may need to wait or upgrade.")
         return None, None
-    except APIError as e:
-        logging.error(f"OpenRouter API Error (Status: {e.status_code}): {e}")
-        return None, None
     except Exception as e:
-        logging.error(f"An unexpected error occurred in call_ai_for_content: {e}")
+        # Catch other potential errors (like timeouts if client raises them, or unexpected issues)
+        # See if the exception has response info attached
+        response_body = e.response.text if hasattr(e, 'response') and hasattr(e.response, 'text') else "N/A"
+        logging.error(f"An unexpected error occurred in call_ai_for_content: {type(e).__name__} - {e}. Raw Response if available: {response_body}")
         return None, None
+    # --- / Enhanced Error Catching ---
 
-
+# --- (Rest of the script: Main execution logic, etc. remain the same) ---
 # --- Main Execution Logic ---
 if __name__ == "__main__":
     logging.info("Starting blog post generation script...")
+    # ... (client init, topic/title generation logic using the TEMP simplified topic prompt) ...
     final_filename = ""
     ai_client = get_ai_client()
 
@@ -268,7 +291,6 @@ if __name__ == "__main__":
              logging.error("Failed to generate a topic. Exiting.")
              print(f"markdown_filename=")
              sys.exit(1)
-        # user_requested_ai_topic remains False if topic was generated
 
     if not final_title:
         logging.info("Title input is blank. Generating title...")
@@ -290,6 +312,7 @@ if __name__ == "__main__":
     ai_frontmatter, ai_body = call_ai_for_content(ai_client, final_title, final_topic, user_requested_ai_topic)
 
     if ai_frontmatter and ai_body:
+        # ... (Construct frontmatter, generate filename, write file) ...
         logging.info("Constructing final markdown file...")
         final_frontmatter = {
             'title': final_title,
@@ -326,6 +349,7 @@ if __name__ == "__main__":
             final_filename = ""
             print(f"filename=")
             sys.exit(1)
+
     else:
         logging.error("Failed to get valid content from AI. No file generated.")
         final_filename = ""
