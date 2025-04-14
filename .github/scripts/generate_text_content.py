@@ -1,3 +1,5 @@
+Okay, here is the complete Python script (.github/scripts/generate_text_content.py) including the modification to use google/gemini-flash-1.5 specifically for the main content generation step (call_ai_for_content), while still using the simplified topic prompt in generate_topic_only for this testing phase.
+
 # .github/scripts/generate_text_content.py
 
 import os
@@ -9,13 +11,14 @@ from slugify import slugify
 from dotenv import load_dotenv
 import logging
 import sys
-import re # Import regex, still needed for later checks
+import re # Import regex
 
 # --- Configuration ---
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 API_KEY = os.environ.get("OPENROUTER_API_KEY")
-OPENROUTER_MODEL = "google/gemini-pro-1.5" # Using the model confirmed earlier
+# Model for Topic/Title Generation (as confirmed working for short tasks)
+OPENROUTER_MODEL = "google/gemini-2.5-pro-exp-03-25:free"
 INPUT_TITLE = os.environ.get("POST_TITLE_INPUT", "").strip()
 INPUT_TOPIC = os.environ.get("POST_TOPIC_INPUT", "").strip()
 OUTPUT_DIR = os.path.join("content", "blogs")
@@ -65,19 +68,17 @@ def get_ai_client():
         logging.error(f"Failed to initialize AI client: {e}")
         return None
 
-# --- Modified Topic Generation Function (Simplified Prompt Test) ---
+# --- Topic Generation Function (Simplified Prompt Test) ---
 def generate_topic_only(client):
     """Calls AI to generate a blog topic (using simplified prompt for testing)."""
     if not client: return None
-    logging.info("Attempting to generate a blog topic (SIMPLIFIED PROMPT TEST)...") # Log test state
+    logging.info("Attempting to generate a blog topic (SIMPLIFIED PROMPT TEST)...")
     try:
         response = client.chat.completions.create(
-            model=OPENROUTER_MODEL,
+            model=OPENROUTER_MODEL, # Uses the main model for topic gen
             messages=[
                 {"role": "system", "content": "You suggest interesting and engaging blog post topics."},
-                # --- TEMPORARILY SIMPLIFIED USER PROMPT ---
-                {"role": "user", "content": "Suggest one single, specific, interesting blog post topic."}
-                # --- / TEMPORARILY SIMPLIFIED USER PROMPT ---
+                {"role": "user", "content": "Suggest one single, specific, interesting blog post topic."} # Simplified prompt
             ],
             temperature=0.8,
             max_tokens=50,
@@ -89,11 +90,9 @@ def generate_topic_only(client):
         if response.choices:
             topic = response.choices[0].message.content.strip().strip('"').strip('.')
             logging.info(f"AI suggested topic raw content: '{topic}'")
-            if topic: # Check if the topic is not empty
-                # --- TEMPORARILY SKIPPING AI CHECK for this test ---
+            if topic:
                 logging.info(f"Using generated topic (constraints removed for test): {topic}")
-                return topic
-                # --- / TEMPORARILY SKIPPING AI CHECK ---
+                return topic # Skipping AI check for this test
             else:
                 logging.warning("AI response content for topic was empty.")
                 return None
@@ -104,7 +103,7 @@ def generate_topic_only(client):
         logging.error(f"Error during topic generation: {e}")
         return None
 
-# --- Function to Generate Only a Title (Unchanged from previous version) ---
+# --- Title Generation Function ---
 def generate_title_only(client, topic):
     """Calls AI to generate a title based on a given topic."""
     if not client: return None
@@ -115,7 +114,7 @@ def generate_title_only(client, topic):
 
     try:
         response = client.chat.completions.create(
-            model=OPENROUTER_MODEL,
+            model=OPENROUTER_MODEL, # Uses the main model for title gen
             messages=[
                 {"role": "system", "content": "You are skilled at writing compelling, SEO-friendly blog post titles."},
                 {"role": "user", "content": f"Generate one compelling and SEO-friendly blog post title (no extra text or quotes) for the topic: '{topic}'. {ai_mention_instruction}"}
@@ -136,14 +135,17 @@ def generate_title_only(client, topic):
         logging.error(f"Error during title generation: {e}")
         return None
 
-# --- Modified AI Call Function for Content (Improved Error Logging) ---
+# --- Content Generation Function (Using Different Model for Test) ---
 def call_ai_for_content(client, title, topic, user_requested_ai_topic):
     """Calls the AI API using the OpenAI library structure, requesting SEO optimization."""
     if not client: return None, None
 
+    # --- Use a potentially more reliable model for the main content generation test ---
+    CONTENT_GENERATION_MODEL = "google/gemini-flash-1.5" # Test with Flash
+    # --- / ---
+
     ai_mention_instruction = "Do NOT mention AI, artificial intelligence, or machine learning unless the user's original topic explicitly required it." if not user_requested_ai_topic else "You can mention AI/ML concepts as relevant to the user-provided AI topic."
 
-    # --- System and User prompts remain the same as the SEO-focused version ---
     system_prompt = f"""
     You are an AI assistant specialized in creating high-quality, SEO-optimized blog posts formatted in Markdown.
     Your goal is to generate informative, engaging content that ranks well in search engines.
@@ -183,31 +185,31 @@ def call_ai_for_content(client, title, topic, user_requested_ai_topic):
     Begin your response directly with 'tags:'.
     """
 
-    logging.info(f"Sending SEO-focused request via OpenAI library to OpenRouter (Model: {OPENROUTER_MODEL}) for title: {title}")
-    response_text = None # Variable to store raw response text on error
+    logging.info(f"Sending SEO-focused request via OpenAI library to OpenRouter (Model: {CONTENT_GENERATION_MODEL}) for title: {title}") # Log model used
+    response_text = None
 
     try:
         response = client.chat.completions.create(
-            model=OPENROUTER_MODEL,
+            model=CONTENT_GENERATION_MODEL, # Use the specific model for this call
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
             ],
-             # Optional: Increase timeout if suspecting partial server timeouts
-            timeout=240.0 # Increased timeout to 4 minutes
+            timeout=240.0 # Increased timeout
         )
         logging.debug(f"Raw response object from content generation: {response}")
 
         if response.choices:
             ai_response_text = response.choices[0].message.content.strip()
-            # --- Parsing logic remains the same ---
+            logging.debug(f"Extracted AI Response Text:\n{ai_response_text}")
+
             if "## Introduction" not in ai_response_text:
                  logging.error("AI response structure error: '## Introduction' marker missing.")
                  body_start_index = ai_response_text.find('##')
                  if body_start_index != -1:
                       generated_frontmatter_str = ai_response_text[:body_start_index].strip()
                       generated_body = ai_response_text[body_start_index:].strip()
-                 else: return None, None # Cannot parse
+                 else: return None, None
             else:
                  parts = ai_response_text.split('## Introduction', 1)
                  generated_frontmatter_str = parts[0].strip()
@@ -230,26 +232,19 @@ def call_ai_for_content(client, title, topic, user_requested_ai_topic):
                  logging.error(f"Could not parse AI-generated frontmatter: {e}")
                  logging.debug(f"Problematic Frontmatter String:\n{generated_frontmatter_str}")
                  return None, None
-            # --- /Parsing logic ---
         else:
-            # --- Log specific error if choices are missing ---
             logging.error("Invalid response structure from AI: 'choices' missing or empty.")
-            # Try to log the raw text if possible (might be available even if structure is bad)
             if hasattr(response, 'text'):
                  response_text = response.text
                  logging.error(f"Raw response text when choices were missing: {response_text}")
-            elif hasattr(response, 'content'): # Might be bytes
+            elif hasattr(response, 'content'):
                  try:
                      response_text = response.content.decode('utf-8')
                      logging.error(f"Raw response content (decoded) when choices were missing: {response_text}")
-                 except:
-                      logging.error("Raw response content was not valid UTF-8.")
-            # --- / Log specific error ---
+                 except: logging.error("Raw response content was not valid UTF-8.")
             return None, None
 
-    # --- Enhanced Error Catching ---
     except APIError as e:
-        # Try to get raw response body from the error object
         response_body = e.response.text if hasattr(e, 'response') and hasattr(e.response, 'text') else "N/A"
         logging.error(f"OpenRouter API Error (Status: {e.status_code}): {e}. Raw Response: {response_body}")
         return None, None
@@ -260,18 +255,14 @@ def call_ai_for_content(client, title, topic, user_requested_ai_topic):
         logging.error(f"OpenRouter Rate Limit Error: {e}. You may need to wait or upgrade.")
         return None, None
     except Exception as e:
-        # Catch other potential errors (like timeouts if client raises them, or unexpected issues)
-        # See if the exception has response info attached
         response_body = e.response.text if hasattr(e, 'response') and hasattr(e.response, 'text') else "N/A"
         logging.error(f"An unexpected error occurred in call_ai_for_content: {type(e).__name__} - {e}. Raw Response if available: {response_body}")
         return None, None
-    # --- / Enhanced Error Catching ---
 
-# --- (Rest of the script: Main execution logic, etc. remain the same) ---
+
 # --- Main Execution Logic ---
 if __name__ == "__main__":
     logging.info("Starting blog post generation script...")
-    # ... (client init, topic/title generation logic using the TEMP simplified topic prompt) ...
     final_filename = ""
     ai_client = get_ai_client()
 
@@ -309,10 +300,9 @@ if __name__ == "__main__":
         print(f"markdown_filename=")
         sys.exit(1)
 
-    ai_frontmatter, ai_body = call_ai_for_content(ai_client, final_title, final_topic, user_requested_ai_topic)
+    ai_frontmatter, ai_body = call_ai_for_content(ai_client, final_title, final_topic, user_requested_ai_topic) # This now uses the different model for content
 
     if ai_frontmatter and ai_body:
-        # ... (Construct frontmatter, generate filename, write file) ...
         logging.info("Constructing final markdown file...")
         final_frontmatter = {
             'title': final_title,
@@ -349,7 +339,6 @@ if __name__ == "__main__":
             final_filename = ""
             print(f"filename=")
             sys.exit(1)
-
     else:
         logging.error("Failed to get valid content from AI. No file generated.")
         final_filename = ""
