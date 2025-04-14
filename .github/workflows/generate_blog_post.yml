@@ -45,7 +45,7 @@ jobs:
       - name: Run text generation script
         id: run-script
         env:
-          OPENROUTER_API_KEY: ${{ secrets.YOUR_OPENROUTER_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           # Inputs can now be blank, the script will handle it
           POST_TITLE_INPUT: ${{ inputs.post_title }}
           POST_TOPIC_INPUT: ${{ inputs.post_topic_or_keywords }}
