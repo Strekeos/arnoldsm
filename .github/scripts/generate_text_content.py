@@ -1,3 +1,5 @@
+# .github/scripts/generate_text_content.py
+
 import os
 from openai import OpenAI, APIError, AuthenticationError, RateLimitError
 import yaml
@@ -7,23 +9,23 @@ from slugify import slugify
 from dotenv import load_dotenv
 import logging
 import sys
-import re # Import regex for checking AI terms
+import re # Import regex, still needed for later checks
 
 # --- Configuration ---
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 API_KEY = os.environ.get("OPENROUTER_API_KEY")
-OPENROUTER_MODEL = "google/gemini-2.5-pro-exp-03-25:free" # Use the model confirmed earlier
-INPUT_TITLE = os.environ.get("POST_TITLE_INPUT", "").strip() # Get input, default empty, strip whitespace
-INPUT_TOPIC = os.environ.get("POST_TOPIC_INPUT", "").strip() # Get input, default empty, strip whitespace
+OPENROUTER_MODEL = "google/gemini-pro-1.5" # Using the model confirmed earlier
+INPUT_TITLE = os.environ.get("POST_TITLE_INPUT", "").strip()
+INPUT_TOPIC = os.environ.get("POST_TOPIC_INPUT", "").strip()
 OUTPUT_DIR = os.path.join("content", "blogs")
 YOUR_SITE_URL = os.environ.get("YOUR_SITE_URL")
 YOUR_APP_NAME = os.environ.get("YOUR_APP_NAME")
 
-# --- Helper Functions --- (generate_filename, get_current_datetime_str remain the same)
+# --- Helper Functions ---
 def generate_filename(title):
     """Creates a slugified, unique filename."""
-    base_slug = slugify(title) if title else "untitled-post" # Handle empty title case
+    base_slug = slugify(title) if title else "untitled-post"
     potential_filename = os.path.join(OUTPUT_DIR, f"{base_slug}.md")
     counter = 1
     while os.path.exists(potential_filename):
@@ -42,7 +44,6 @@ def get_current_datetime_str():
         logging.error(f"Failed to get Istanbul time: {e}. Falling back to UTC.")
         return datetime.datetime.now(pytz.utc).isoformat()
 
-# --- NEW: Function to get AI Client (avoids redundant code) ---
 def get_ai_client():
     """Initializes and returns the OpenAI client configured for OpenRouter."""
     if not API_KEY:
@@ -64,41 +65,36 @@ def get_ai_client():
         logging.error(f"Failed to initialize AI client: {e}")
         return None
 
-# --- NEW: Function to Generate Only a Topic ---
+# --- Modified Topic Generation Function (Simplified Prompt Test) ---
 def generate_topic_only(client):
-    """Calls AI to generate a blog topic, avoiding AI subjects."""
+    """Calls AI to generate a blog topic (using simplified prompt for testing)."""
     if not client: return None
-    logging.info("Attempting to generate a blog topic (non-AI)...")
+    logging.info("Attempting to generate a blog topic (SIMPLIFIED PROMPT TEST)...") # Log test state
     try:
         response = client.chat.completions.create(
             model=OPENROUTER_MODEL,
             messages=[
                 {"role": "system", "content": "You suggest interesting and engaging blog post topics."},
-                {"role": "user", "content": "Suggest one single, specific, interesting blog post topic. Avoid topics related to AI, artificial intelligence, machine learning, LLMs, or the tech industry itself. Focus on culture, history, science, nature, arts, or human interest."}
+                # --- TEMPORARILY SIMPLIFIED USER PROMPT ---
+                {"role": "user", "content": "Suggest one single, specific, interesting blog post topic."}
+                # --- / TEMPORARILY SIMPLIFIED USER PROMPT ---
             ],
             temperature=0.8,
             max_tokens=50,
             n=1,
             stop=None,
         )
-        # --- ADD DETAILED LOGGING ---
         logging.debug(f"Raw response object from topic generation: {response}")
-        # --- / ADD DETAILED LOGGING ---
 
         if response.choices:
             topic = response.choices[0].message.content.strip().strip('"').strip('.')
-            # --- Log the topic *before* the check ---
-            logging.info(f"AI suggested topic raw content: '{topic}'") # Log with quotes to see if truly empty
-            # --- / ---
+            logging.info(f"AI suggested topic raw content: '{topic}'")
             if topic: # Check if the topic is not empty
-                if not re.search(r'\b(ai|artificial intelligence|machine learning|llm)\b', topic, re.IGNORECASE):
-                    logging.info(f"Using valid topic: {topic}")
-                    return topic
-                else:
-                    logging.warning(f"AI generated an AI topic despite instructions: {topic}.")
-                    return None
+                # --- TEMPORARILY SKIPPING AI CHECK for this test ---
+                logging.info(f"Using generated topic (constraints removed for test): {topic}")
+                return topic
+                # --- / TEMPORARILY SKIPPING AI CHECK ---
             else:
-                # Explicitly log that the content was empty
                 logging.warning("AI response content for topic was empty.")
                 return None
         else:
@@ -108,13 +104,12 @@ def generate_topic_only(client):
         logging.error(f"Error during topic generation: {e}")
         return None
 
-# --- NEW: Function to Generate Only a Title ---
+# --- Function to Generate Only a Title (Unchanged from previous version) ---
 def generate_title_only(client, topic):
     """Calls AI to generate a title based on a given topic."""
     if not client: return None
     logging.info(f"Attempting to generate a title for topic: {topic}")
 
-    # Check if the provided topic is about AI - needed for title generation instruction
     is_ai_topic = bool(re.search(r'\b(ai|artificial intelligence|machine learning|llm)\b', topic, re.IGNORECASE))
     ai_mention_instruction = "Do not mention AI unless the topic explicitly requires it." if not is_ai_topic else ""
 
@@ -141,13 +136,11 @@ def generate_title_only(client, topic):
         logging.error(f"Error during title generation: {e}")
         return None
 
-
-# --- Modified AI Call Function for Content ---
+# --- AI Call Function for Content (Unchanged from previous version) ---
 def call_ai_for_content(client, title, topic, user_requested_ai_topic):
     """Calls the AI API using the OpenAI library structure, requesting SEO optimization."""
-    if not client: return None, None # Check if client initialization failed
+    if not client: return None, None
 
-    # --- Adjust prompts based on whether the user originally asked for AI topic ---
     ai_mention_instruction = "Do NOT mention AI, artificial intelligence, or machine learning unless the user's original topic explicitly required it." if not user_requested_ai_topic else "You can mention AI/ML concepts as relevant to the user-provided AI topic."
 
     system_prompt = f"""
@@ -200,9 +193,12 @@ def call_ai_for_content(client, title, topic, user_requested_ai_topic):
                 {"role": "user", "content": user_prompt}
             ],
         )
-        # ... (response parsing logic remains the same as before) ...
+        logging.debug(f"Raw response object from content generation: {response}")
+
         if response.choices:
             ai_response_text = response.choices[0].message.content.strip()
+            logging.debug(f"Extracted AI Response Text:\n{ai_response_text}")
+
             if "## Introduction" not in ai_response_text:
                  logging.error("AI response structure error: '## Introduction' marker missing.")
                  body_start_index = ai_response_text.find('##')
@@ -226,13 +222,27 @@ def call_ai_for_content(client, title, topic, user_requested_ai_topic):
                      if temp_dict: ai_generated_frontmatter = temp_dict
                      else: raise ValueError("Parsed frontmatter not dict/lines.")
                 else: ai_generated_frontmatter = {k.lower(): v for k, v in ai_generated_frontmatter.items()}
+                logging.info("Successfully parsed AI-generated frontmatter.")
                 return ai_generated_frontmatter, generated_body
             except (yaml.YAMLError, ValueError, TypeError) as e:
                  logging.error(f"Could not parse AI-generated frontmatter: {e}")
+                 logging.debug(f"Problematic Frontmatter String:\n{generated_frontmatter_str}")
                  return None, None
-        else: return None, None
-    except (AuthenticationError, RateLimitError, APIError, Exception) as e:
-        logging.error(f"Error during AI content call: {e}")
+        else:
+            logging.error("Invalid response structure from AI: 'choices' missing or empty.")
+            return None, None
+
+    except AuthenticationError as e:
+        logging.error(f"OpenRouter Authentication Error: {e}. Check your API Key.")
+        return None, None
+    except RateLimitError as e:
+        logging.error(f"OpenRouter Rate Limit Error: {e}. You may need to wait or upgrade.")
+        return None, None
+    except APIError as e:
+        logging.error(f"OpenRouter API Error (Status: {e.status_code}): {e}")
+        return None, None
+    except Exception as e:
+        logging.error(f"An unexpected error occurred in call_ai_for_content: {e}")
         return None, None
 
 
@@ -240,39 +250,36 @@ def call_ai_for_content(client, title, topic, user_requested_ai_topic):
 if __name__ == "__main__":
     logging.info("Starting blog post generation script...")
     final_filename = ""
-    ai_client = get_ai_client() # Initialize client once
+    ai_client = get_ai_client()
 
     if not ai_client:
         logging.error("Failed to initialize AI client. Exiting.")
-        print(f"markdown_filename=") # Output empty filename
+        print(f"markdown_filename=")
         sys.exit(1)
 
-    # --- Determine Final Title and Topic ---
     final_title = INPUT_TITLE
     final_topic = INPUT_TOPIC
     user_requested_ai_topic = bool(INPUT_TOPIC and re.search(r'\b(ai|artificial intelligence|machine learning|llm)\b', INPUT_TOPIC, re.IGNORECASE))
 
     if not final_topic:
         logging.info("Topic input is blank. Generating topic...")
-        final_topic = generate_topic_only(ai_client)
+        final_topic = generate_topic_only(ai_client) # Using the modified test version
         if not final_topic:
              logging.error("Failed to generate a topic. Exiting.")
              print(f"markdown_filename=")
              sys.exit(1)
-        # Since topic was blank, the generated topic is guaranteed non-AI, so user_requested_ai_topic remains False.
+        # user_requested_ai_topic remains False if topic was generated
 
     if not final_title:
         logging.info("Title input is blank. Generating title...")
-        # Pass the determined final_topic (could be original or generated)
         final_title = generate_title_only(ai_client, final_topic)
         if not final_title:
              logging.warning("Failed to generate a title. Using topic as fallback title.")
-             final_title = final_topic # Use topic as title if generation fails
+             final_title = final_topic
 
     logging.info(f"Proceeding with Title: '{final_title}' and Topic: '{final_topic}'")
     logging.info(f"User requested AI topic explicitly: {user_requested_ai_topic}")
 
-    # --- Ensure output directory exists ---
     try:
         os.makedirs(OUTPUT_DIR, exist_ok=True)
     except OSError as e:
@@ -280,14 +287,12 @@ if __name__ == "__main__":
         print(f"markdown_filename=")
         sys.exit(1)
 
-    # --- Generate the main content ---
     ai_frontmatter, ai_body = call_ai_for_content(ai_client, final_title, final_topic, user_requested_ai_topic)
 
-    # --- Assemble and save the file ---
     if ai_frontmatter and ai_body:
         logging.info("Constructing final markdown file...")
         final_frontmatter = {
-            'title': final_title, # Use the final determined title
+            'title': final_title,
             'date': get_current_datetime_str(),
             'layout': 'single',
             'draft': True,
@@ -325,6 +330,5 @@ if __name__ == "__main__":
         logging.error("Failed to get valid content from AI. No file generated.")
         final_filename = ""
 
-    # --- Output filename for workflow ---
     print(f"markdown_filename={final_filename}")
     logging.info("Blog post generation script finished.")
