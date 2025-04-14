@@ -1,5 +1,12 @@
-# requirements.txt
-PyYAML
-requests
-together
-python-dotenv
+# Dependencies for generate_text_content.py
+openai>=1.0.0    # For OpenRouter API calls via OpenAI library structure
+python-slugify   # For creating filenames from titles
+pytz             # For timezone handling (Istanbul time)
+
+# Dependencies for generate_single_image.py
+together         # SDK for Together AI image generation
+requests         # Used by image script (saving from URL) and potentially openai lib
+
+# Common Dependencies (used by both scripts)
+PyYAML           # For parsing/dumping YAML frontmatter
+python-dotenv    # For loading .env files (useful for local testing)
