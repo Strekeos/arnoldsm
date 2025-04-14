@@ -76,23 +76,33 @@ def generate_topic_only(client):
                 {"role": "system", "content": "You suggest interesting and engaging blog post topics."},
                 {"role": "user", "content": "Suggest one single, specific, interesting blog post topic. Avoid topics related to AI, artificial intelligence, machine learning, LLMs, or the tech industry itself. Focus on culture, history, science, nature, arts, or human interest."}
             ],
-            temperature=0.8, # Slightly higher temp for more creative topics
+            temperature=0.8,
             max_tokens=50,
             n=1,
             stop=None,
         )
+        # --- ADD DETAILED LOGGING ---
+        logging.debug(f"Raw response object from topic generation: {response}")
+        # --- / ADD DETAILED LOGGING ---
+
         if response.choices:
             topic = response.choices[0].message.content.strip().strip('"').strip('.')
-            logging.info(f"AI suggested topic: {topic}")
-            # Basic check to ensure it didn't ignore the constraint (can be improved)
-            if not re.search(r'\b(ai|artificial intelligence|machine learning|llm)\b', topic, re.IGNORECASE):
-                 return topic
+            # --- Log the topic *before* the check ---
+            logging.info(f"AI suggested topic raw content: '{topic}'") # Log with quotes to see if truly empty
+            # --- / ---
+            if topic: # Check if the topic is not empty
+                if not re.search(r'\b(ai|artificial intelligence|machine learning|llm)\b', topic, re.IGNORECASE):
+                    logging.info(f"Using valid topic: {topic}")
+                    return topic
+                else:
+                    logging.warning(f"AI generated an AI topic despite instructions: {topic}.")
+                    return None
             else:
-                 logging.warning(f"AI generated an AI topic despite instructions: {topic}. Retrying or falling back might be needed.")
-                 # For simplicity now, we'll just return None if constraint failed
-                 return None
+                # Explicitly log that the content was empty
+                logging.warning("AI response content for topic was empty.")
+                return None
         else:
-            logging.warning("AI did not provide a topic suggestion.")
+            logging.warning("AI response object had no 'choices'.")
             return None
     except Exception as e:
         logging.error(f"Error during topic generation: {e}")
