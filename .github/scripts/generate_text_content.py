@@ -13,7 +13,7 @@ import re # Import regex for checking AI terms
 load_dotenv()
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 API_KEY = os.environ.get("OPENROUTER_API_KEY")
-OPENROUTER_MODEL = "google/gemini-pro-1.5" # Use the model confirmed earlier
+OPENROUTER_MODEL = "google/gemini-2.5-pro-exp-03-25:free" # Use the model confirmed earlier
 INPUT_TITLE = os.environ.get("POST_TITLE_INPUT", "").strip() # Get input, default empty, strip whitespace
 INPUT_TOPIC = os.environ.get("POST_TOPIC_INPUT", "").strip() # Get input, default empty, strip whitespace
 OUTPUT_DIR = os.path.join("content", "blogs")
