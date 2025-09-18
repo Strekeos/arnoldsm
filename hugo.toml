@@ -54,6 +54,19 @@ date = "March 2025"
 url = "https://www.vizyongrubu.com/akademi/"
 
 [[params.experience]]
+company = "BMM BİRLEŞİK MÜTEAHHİTLER MÜŞAVİRLİK İNŞAAT PROJE TESİS KONTROLLÜK DANIŞMANLIK A.Ş."
+role = "Coordinator"
+period = "Sept 2025 - Present"
+logo = "/images/company/bmm.jpg"
+description = "Coordinates financial and accounting procedures"
+responsibilities = [
+    "Collection, examination, and comparison of financial documents.",
+    "Confirming and accepting employee expenses.",
+    "Checking tally, preparing progress payments and payroll.",
+    "Optimizing office work."
+]
+
+[[params.experience]]
 company = "VİZYON DENETİM VE SERBEST MUHASEBECİ MALİ MÜŞAVİRLİK LTD. ŞTİ."
 role = "Junior Financial Auditor"
 period = "Nov 2024 - June 2025"
