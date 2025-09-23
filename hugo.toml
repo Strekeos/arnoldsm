@@ -3,6 +3,9 @@ languageCode = 'en-us'
 title = 'ArnoldSM - Portfolio & Blog'
 theme = 'hugo-noir-v3'
 
+# Enable the built-in robots.txt generation
+enableRobotsTXT = true
+
 # URL handling
 relativeURLs = true
 canonifyURLs = true
