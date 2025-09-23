@@ -1,0 +1,6 @@
+# Allow all search engines to crawl all content
+User-agent: *
+Allow: /
+
+# Point search engines to the sitemap
+Sitemap: https://arnoldsm.pages.dev/sitemap.xml
