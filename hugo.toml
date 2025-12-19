@@ -152,6 +152,13 @@ tech = "QMK, Java, C"
 image = "/images/projects/monsgeekm1v5.png"
 link = "https://github.com/Strekeos/custom-qmk-firmware/tree/main/Compiled/Monsgeek%20M1%20V5"
 
+[[params.projects]]
+title = "Excel Macros"
+description = "Useful Excel Macros for the white collar"
+tech = "VBA"
+image = "/images/projects/excel-macro.png"
+link = "https://github.com/Strekeos/Excel-Macros"
+
 [[params.blogs]]
 title = "My First Blog Post"
 date = "2025-04-09"
