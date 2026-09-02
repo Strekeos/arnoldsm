@@ -139,6 +139,13 @@ responsibilities = [
 ]
 
 [[params.projects]]
+title = "turkce-hutbe-api"
+description = "A serverless API service that automatically collects the Presidency of Religious Affairs' weekly Friday sermons and provides their text, references, and file links in JSON format"
+tech = "Python"
+image = "/images/projects/turkce-hutbe-api.png"
+link = "https://github.com/Strekeos/turkce-hutbe-api"
+
+[[params.projects]]
 title = "QMK Firmware for GMMK Numpad"
 description = "Updated firmware for GMMK Numpad"
 tech = "QMK, Java, C"
@@ -158,13 +165,6 @@ description = "Useful Excel Macros for the white collar"
 tech = "VBA"
 image = "/images/projects/excel-macro.png"
 link = "https://github.com/Strekeos/Excel-Macros"
-
-[[params.projects]]
-title = "turkce-hutbe-api"
-description = "A serverless API service that automatically collects the Presidency of Religious Affairs' weekly Friday sermons and provides their text, references, and file links in JSON format"
-tech = "Python"
-image = "/images/projects/turkce-hutbe-api.png"
-link = "https://github.com/Strekeos/turkce-hutbe-api"
 
 [[params.blogs]]
 title = "My First Blog Post"
