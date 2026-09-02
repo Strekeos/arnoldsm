@@ -159,6 +159,13 @@ tech = "VBA"
 image = "/images/projects/excel-macro.png"
 link = "https://github.com/Strekeos/Excel-Macros"
 
+[[params.projects]]
+title = "turkce-hutbe-api"
+description = "A serverless API service that automatically collects the Presidency of Religious Affairs' weekly Friday sermons and provides their text, references, and file links in JSON format"
+tech = "Python"
+image = "/images/projects/turkce-hutbe-api.png"
+link = "https://github.com/Strekeos/turkce-hutbe-api"
+
 [[params.blogs]]
 title = "My First Blog Post"
 date = "2025-04-09"
